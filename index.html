@@ -332,7 +332,7 @@
         </div>
 
         <p class="preview-hint">
-          <strong>✨ Fluid Hybrid:</strong> একটাই সিগনেচার কপি করুন — ডেক্সটপে পাশাপাশি দেখাবে, মোবাইলে স্বয়ংক্রিয়ভাবে নিচে সেজে যাবে। Desktop/Mobile টগল শুধু প্রিভিউ দেখতে।
+          <strong>Fluid Hybrid:</strong> একটাই সিগনেচার কপি করুন — ডেক্সটপে পাশাপাশি দেখাবে, মোবাইলে স্বয়ংক্রিয়ভাবে নিচে সেজে যাবে। Desktop/Mobile টগল শুধু প্রিভিউ দেখতে।
         </p>
 
         <div class="instructions-card">
@@ -583,14 +583,12 @@
                 // ---- Statement ----
                 '<div style="font-family:' + ff + ';font-size:19px;line-height:26px;font-weight:600;letter-spacing:-0.3px;color:#1d1d1f;padding-top:20px;">' + escapeHtml(v.headline) + '</div>' +
                 '<div style="font-family:' + ff + ';font-size:13px;line-height:20px;font-weight:400;color:#86868b;padding-top:4px;">' + escapeHtml(v.subheadline) + '</div>' +
-                '<div style="font-family:' + ff + ';font-size:13px;line-height:20px;font-weight:600;color:#0066cc;padding-top:8px;"><span style="font-size:11px;color:#0066cc;vertical-align:baseline;">&#9679;</span>&nbsp;' + escapeHtml(v.status) + '</div>' +
+                '<div style="font-family:' + ff + ';font-size:13px;line-height:20px;font-weight:600;color:#0066cc;padding-top:8px;"><span style="font-size:8px;color:#0066cc;vertical-align:middle;">&#9679;</span>&nbsp;' + escapeHtml(v.status) + '</div>' +
 
                 // ---- Divider ----
                 '<div style="border-top:1px solid #e5e5ea;height:1px;line-height:1px;font-size:1px;margin:18px 0;width:100%;max-width:540px;"></div>' +
 
                 // ---- FLUID Contact Section ----
-                // Each contact item is display:inline-block so they flow side-by-side
-                // on wide screens and stack on narrow screens naturally.
                 '<div style="font-family:' + ff + ';font-size:13px;line-height:22px;font-weight:500;">' +
                   // Website
                   '<div style="display:inline-block;white-space:nowrap;vertical-align:top;padding:0 20px 6px 0;">' +
@@ -607,48 +605,28 @@
                 '</div>' +
 
                 // ---- FLUID Buttons Section ----
-                // Uses min-width/max-width trick:
-                //   On wide (>340px container): two buttons fit side-by-side at ~49%
-                //   On narrow (<340px container): each button goes to 100% width and stacks
+                // Compact buttons — fit side-by-side on desktop, stack on mobile naturally
                 '<div style="padding-top:14px;font-size:0;">' +
 
-                  // Primary Button wrapper
-                  '<!--[if mso]><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td width="50%" valign="top"><![endif]-->' +
-                  '<div style="display:inline-block;vertical-align:top;width:100%;max-width:260px;min-width:140px;padding:0 10px 10px 0;">' +
-                    '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;height:46px;border-collapse:separate;">' +
+                  // Primary Button wrapper — compact fit-content style
+                  '<!--[if mso]><table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td valign="top"><![endif]-->' +
+                  '<div style="display:inline-block;vertical-align:top;padding:0 8px 8px 0;">' +
+                    '<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:separate;">' +
                       '<tr>' +
-                        '<td style="background:#0066cc;border-radius:100px;height:46px;box-shadow:0 4px 10px rgba(0,102,204,0.22);">' +
-                          '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;height:46px;border-collapse:collapse;">' +
-                            '<tr>' +
-                              '<td style="padding:0 6px 0 20px;font-family:' + ff + ';font-size:14px;line-height:46px;font-weight:600;white-space:nowrap;">' +
-                                '<a href="' + escapeHtml(v.btn1Url) + '" style="color:#ffffff;text-decoration:none;display:block;">' + escapeHtml(v.btn1Text) + '</a>' +
-                              '</td>' +
-                              '<td width="32" style="padding:0 7px 0 0;width:32px;" align="right">' +
-                                '<a href="' + escapeHtml(v.btn1Url) + '" style="text-decoration:none;display:block;width:32px;height:32px;line-height:32px;border-radius:16px;background:#ffffff;color:#0066cc;text-align:center;font-family:Arial,sans-serif;font-size:16px;font-weight:bold;">&rarr;</a>' +
-                              '</td>' +
-                            '</tr>' +
-                          '</table>' +
+                        '<td style="background:#0066cc;border-radius:100px;height:38px;">' +
+                          '<a href="' + escapeHtml(v.btn1Url) + '" style="color:#ffffff;text-decoration:none;display:inline-block;font-family:' + ff + ';font-size:13px;line-height:38px;font-weight:600;white-space:nowrap;padding:0 16px 0 18px;">' + escapeHtml(v.btn1Text) + ' &nbsp;&rarr;</a>' +
                         '</td>' +
                       '</tr>' +
                     '</table>' +
                   '</div>' +
-                  '<!--[if mso]></td><td width="50%" valign="top"><![endif]-->' +
+                  '<!--[if mso]></td><td valign="top"><![endif]-->' +
 
-                  // Secondary Button wrapper
-                  '<div style="display:inline-block;vertical-align:top;width:100%;max-width:260px;min-width:140px;padding:0 0 10px 0;">' +
-                    '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;height:46px;border-collapse:separate;">' +
+                  // Secondary Button wrapper — compact fit-content style
+                  '<div style="display:inline-block;vertical-align:top;padding:0 0 8px 0;">' +
+                    '<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:separate;">' +
                       '<tr>' +
-                        '<td style="background:#ffffff;border:1.5px solid #1d1d1f;border-radius:100px;height:46px;">' +
-                          '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;height:46px;border-collapse:collapse;">' +
-                            '<tr>' +
-                              '<td style="padding:0 6px 0 18px;font-family:' + ff + ';font-size:14px;line-height:46px;font-weight:600;white-space:nowrap;">' +
-                                '<a href="' + escapeHtml(v.btn2Url) + '" style="color:#1d1d1f;text-decoration:none;display:block;">' + escapeHtml(v.btn2Text) + '</a>' +
-                              '</td>' +
-                              '<td width="32" style="padding:0 7px 0 0;width:32px;" align="right">' +
-                                '<a href="' + escapeHtml(v.btn2Url) + '" style="text-decoration:none;display:block;width:32px;height:32px;line-height:32px;border-radius:16px;background:#1d1d1f;color:#ffffff;text-align:center;font-family:Arial,sans-serif;font-size:16px;font-weight:bold;">&rarr;</a>' +
-                              '</td>' +
-                            '</tr>' +
-                          '</table>' +
+                        '<td style="background:#ffffff;border:1.5px solid #1d1d1f;border-radius:100px;height:38px;">' +
+                          '<a href="' + escapeHtml(v.btn2Url) + '" style="color:#1d1d1f;text-decoration:none;display:inline-block;font-family:' + ff + ';font-size:13px;line-height:38px;font-weight:600;white-space:nowrap;padding:0 16px 0 18px;">' + escapeHtml(v.btn2Text) + ' &nbsp;&rarr;</a>' +
                         '</td>' +
                       '</tr>' +
                     '</table>' +
@@ -757,7 +735,7 @@
         }
 
         copyStatus.textContent = ok
-          ? "\u2705 Copied! Auto-responsive — paste it anywhere."
+          ? "Copied! Auto-responsive \u2014 paste it anywhere."
           : "Please select preview manually and copy.";
 
         setTimeout(function () {
