@@ -3,218 +3,346 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Creatiancy &mdash; Email Signature Studio</title>
+  <title>Creatiancy &mdash; Signature Studio &amp; Live Generator</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
       --brand-red: #9b1c22;
-      --brand-red-hover: #b32128;
+      --brand-red-hover: #b8232a;
       --brand-black: #050507;
       --ink: #0a0a0c;
       --muted: #6e6e73;
       --border: #e3eaf1;
-      --bg: #0e0f12;
-      --card-bg: #16171b;
-      --panel-border: rgba(255, 255, 255, 0.08);
-      --text-white: #f5f5f7;
+      --app-bg: #f5f6fa;
+      --panel-bg: #ffffff;
+      --input-bg: #fbfbfd;
+      --input-border: #dcdfe6;
+      --input-focus: #9b1c22;
+      --text-main: #1d1d1f;
+      --text-sub: #6e6e73;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background: var(--bg);
+      background: var(--app-bg);
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      color: var(--text-white);
+      color: var(--text-main);
       min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+    }
+
+    /* Top Navigation Header */
+    .studio-navbar {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 14px 24px;
+    }
+
+    .navbar-inner {
+      max-width: 1320px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-mark {
+      height: 24px;
+      display: flex;
+      align-items: center;
+    }
+
+    .brand-tag {
+      background: rgba(155, 28, 34, 0.08);
+      color: var(--brand-red);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      padding: 4px 10px;
+      border-radius: 100px;
+      border: 1px solid rgba(155, 28, 34, 0.15);
+      text-transform: uppercase;
+    }
+
+    .navbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Main Grid Layout */
+    .studio-layout {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 28px 24px 64px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+
+    @media (min-width: 1024px) {
+      .studio-layout {
+        grid-template-columns: 1.15fr 0.85fr;
+        align-items: start;
+      }
+    }
+
+    /* Panels */
+    .studio-panel {
+      background: var(--panel-bg);
+      border-radius: 20px;
+      border: 1px solid rgba(0, 0, 0, 0.07);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      overflow: hidden;
+    }
+
+    .panel-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid #f0f2f5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .panel-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .panel-title .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--brand-red);
+    }
+
+    /* Preview Canvas Area */
+    .preview-body {
+      padding: 36px 24px;
+      min-height: 480px;
+      background: #fafafc;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 40px 20px 80px;
-      -webkit-font-smoothing: antialiased;
-      background-image: radial-gradient(circle at 50% 0%, rgba(155, 28, 34, 0.18) 0%, transparent 60%);
-    }
-
-    .studio-header {
-      text-align: center;
-      margin-bottom: 32px;
-    }
-
-    .brand-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(155, 28, 34, 0.15);
-      border: 1px solid rgba(155, 28, 34, 0.35);
-      color: #ff6b72;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      padding: 6px 14px;
-      border-radius: 100px;
-      margin-bottom: 12px;
-    }
-
-    .brand-badge::before {
-      content: '';
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #ff4d55;
-      box-shadow: 0 0 8px #ff4d55;
-    }
-
-    .studio-header h1 {
-      font-size: 28px;
-      font-weight: 800;
-      letter-spacing: -0.6px;
-      margin-bottom: 8px;
-      color: #ffffff;
-    }
-
-    .studio-header p {
-      color: #8e8e93;
-      font-size: 14px;
-    }
-
-    .controls-bar {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
       justify-content: center;
-      gap: 12px;
-      margin-bottom: 32px;
-      background: rgba(255, 255, 255, 0.04);
-      padding: 8px 12px;
-      border-radius: 100px;
-      border: 1px solid var(--panel-border);
-      backdrop-filter: blur(12px);
+      transition: background 0.25s ease;
     }
 
-    .btn {
-      appearance: none;
-      border: none;
-      background: #ffffff;
-      color: #000000;
-      font-family: inherit;
-      font-size: 13px;
-      font-weight: 700;
-      padding: 10px 22px;
-      border-radius: 100px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    .preview-body.dark-canvas {
+      background: #111215;
     }
 
-    .btn:hover {
-      transform: translateY(-2px);
-      background: #f0f0f2;
-      box-shadow: 0 6px 20px rgba(255, 255, 255, 0.15);
+    .preview-stage {
+      width: 100%;
+      max-width: 560px;
+      transition: max-width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .btn-brand {
-      background: var(--brand-red);
-      color: #ffffff;
-    }
-
-    .btn-brand:hover {
-      background: var(--brand-red-hover);
-      box-shadow: 0 6px 20px rgba(155, 28, 34, 0.4);
-    }
-
-    .btn-ghost {
-      background: transparent;
-      color: #d1d1d6;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      box-shadow: none;
-    }
-
-    .btn-ghost:hover {
-      background: rgba(255, 255, 255, 0.08);
-      color: #ffffff;
-      box-shadow: none;
-    }
-
-    .view-switch {
+    /* Toolbar buttons inside preview */
+    .view-toggles {
       display: flex;
-      background: rgba(0, 0, 0, 0.3);
+      background: #f0f2f5;
       padding: 3px;
       border-radius: 100px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    .view-btn {
+    .view-tab {
       appearance: none;
       border: none;
       background: transparent;
-      color: #8e8e93;
+      color: var(--text-sub);
       padding: 6px 14px;
       font-size: 12px;
       font-weight: 600;
       border-radius: 100px;
       cursor: pointer;
       transition: all 0.2s ease;
+      font-family: inherit;
     }
 
-    .view-btn.active {
-      background: rgba(255, 255, 255, 0.12);
-      color: #ffffff;
-    }
-
-    .preview-canvas {
-      width: 100%;
-      max-width: 900px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .signature-card-outer {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      padding: 40px 24px;
-      border-radius: 28px;
+    .view-tab.active {
       background: #ffffff;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      color: var(--text-main);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
     }
 
-    .signature-card-outer.dark-bg {
-      background: #111215;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    #signature-stage {
-      transition: max-width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-      width: 100%;
-      max-width: 560px;
-    }
-
-    /* Toast */
-    .toast {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%) translateY(100px);
-      background: #ffffff;
-      color: #050507;
+    /* Buttons */
+    .btn {
+      appearance: none;
+      border: none;
+      font-family: inherit;
       font-size: 13px;
       font-weight: 700;
-      padding: 12px 24px;
+      padding: 9px 18px;
       border-radius: 100px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      display: flex;
+      cursor: pointer;
+      display: inline-flex;
       align-items: center;
       gap: 8px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-primary {
+      background: var(--brand-red);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(155, 28, 34, 0.25);
+    }
+
+    .btn-primary:hover {
+      background: var(--brand-red-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(155, 28, 34, 0.35);
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      color: var(--text-main);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: #f7f8fa;
+    }
+
+    .btn-icon {
+      padding: 8px 12px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .btn-icon:hover {
+      background: #f7f8fa;
+    }
+
+    /* Editor Form Styles */
+    .form-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-height: 720px;
+      overflow-y: auto;
+    }
+
+    .form-section {
+      background: #fcfcfd;
+      border: 1px solid #f0f2f5;
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .section-headline {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--brand-red);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    @media (min-width: 600px) {
+      .form-row {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #373a40;
+    }
+
+    input[type="text"],
+    input[type="url"],
+    input[type="email"],
+    textarea {
+      appearance: none;
+      width: 100%;
+      background: var(--input-bg);
+      border: 1.5px solid var(--input-border);
+      border-radius: 10px;
+      padding: 9px 12px;
+      font-family: inherit;
+      font-size: 13px;
+      color: var(--text-main);
+      transition: all 0.2s ease;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--input-focus);
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(155, 28, 34, 0.1);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 52px;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(120px);
+      background: #050507;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 12px 24px;
+      border-radius: 100px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      display: flex;
+      align-items: center;
+      gap: 10px;
       transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       z-index: 1000;
       pointer-events: none;
@@ -224,221 +352,425 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    .instructions-card {
-      max-width: 560px;
-      width: 100%;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 18px;
-      padding: 20px 24px;
-      font-size: 12px;
-      line-height: 18px;
-      color: #8e8e93;
-    }
-
-    .instructions-card strong {
-      color: #d1d1d6;
+    .toast-dot {
+      width: 7px;
+      height: 7px;
+      background: #28cd41;
+      border-radius: 50%;
     }
   </style>
 </head>
 <body>
 
-  <header class="studio-header">
-    <div class="brand-badge">Official Signature Architecture</div>
-    <h1>Creatiancy &mdash; Email Signature</h1>
-    <p>Pixel-perfect reproduction with official brand vector identity and fluid hybrid rendering</p>
-  </header>
+  <!-- Top Navigation -->
+  <nav class="studio-navbar">
+    <div class="navbar-inner">
+      <div class="brand-group">
+        <div class="brand-mark">
+          <img src="data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMiIgZGF0YS1uYW1lPSJMYXllciAyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MjkuODQgMTA4LjIzIj4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLmNscy0xIHsKICAgICAgICBmaWxsOiAjOWIxYzIyOwogICAgICB9CiAgICA8L3N0eWxlPgogIDwvZGVmcz4KICA8ZyBpZD0iTGF5ZXJfMS0yIiBkYXRhLW5hbWU9IkxheWVyIDEiPgogICAgPGc+CiAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTUxLjcxLDYxLjIxYy0uMzgsMy4yOC0xLjMyLDYuMjUtMi44LDguOTItMS40OSwyLjY3LTMuMzgsNC45Ni01LjY2LDYuODctMi4yOSwxLjkxLTQuOSwzLjM5LTcuODQsNC40Ni0yLjk0LDEuMDctNi4xMiwxLjYtOS41NSwxLjYtMy44MSwwLTcuMy0uNjMtMTAuNDctMS44OS0zLjE3LTEuMjYtNS44OS0zLjE2LTguMTgtNS43Mi0yLjI5LTIuNTUtNC4wNi01LjcyLTUuMzItOS41LTEuMjYtMy43OC0xLjg5LTguMTgtMS44OS0xMy4yMnMuNjMtOS4zOCwxLjg5LTEzLjA0YzEuMjYtMy42NiwzLjAzLTYuNjUsNS4zMi04Ljk4LDIuMjktMi4zMyw1LjA1LTQuMDYsOC4zLTUuMjEsMy4yNC0xLjE0LDYuODQtMS43MiwxMC44MS0xLjcyLDMuNjYsMCw3LC41LDEwLjAxLDEuNDksMy4wMS45OSw1LjY0LDIuNDQsNy45LDQuMzUsMi4yNSwxLjkxLDQuMDIsNC4yLDUuMzIsNi44NywxLjMsMi42NywyLjA2LDUuNjUsMi4yOSw4LjkyaC0xNC45OWMtLjM4LTIuOS0xLjU0LTUuMTctMy40OS02LjgxLTEuOTUtMS42NC00LjMzLTIuNDYtNy4xNS0yLjQ2LTEuNiwwLTMuMDkuMjctNC40Ni44LTEuMzcuNTQtMi41NywxLjQzLTMuNiwyLjY5LTEuMDMsMS4yNi0xLjg1LDIuOTQtMi40Niw1LjAzLS42MSwyLjEtLjkxLDQuNjctLjkxLDcuNzIsMCw2LjE4LDEuMSwxMC43NSwzLjMyLDEzLjczLDIuMjEsMi45Nyw0Ljc3LDQuNDYsNy42Nyw0LjQ2czUuMzgtLjgsNy40NC0yLjRjMi4wNi0xLjYsMy4yNC0zLjkzLDMuNTUtNi45OGgxNC45OVoiLz4KICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNTcuMjEsODEuNTdWMjUuMjhoMTMuOTZ2Ni43NWMxLjIyLTEuOTEsMi41LTMuMzksMy44My00LjQ2LDEuMzMtMS4wNywyLjcxLTEuODksNC4xMi0yLjQ2LDEuNDEtLjU3LDIuODQtLjkzLDQuMjktMS4wOSwxLjQ1LS4xNSwyLjk0LS4yMyw0LjQ2LS4yM2gxLjk1djE1LjIyYy0xLjM3LS4yMy0yLjc1LS4zNC00LjEyLS4zNC05LjA4LDAtMTMuNjIsNC41NC0xMy42MiwxMy42MnYyOS4yOWgtMTQuODdaIi8+CiAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTEwNi4wOCw1Ny4zMmMuMjMsNC4yNywxLjQ3LDcuNjcsMy43MiwxMC4xOCwyLjI1LDIuNTIsNS4yMSwzLjc4LDguODcsMy43OCwyLjQ0LDAsNC42LS41NSw2LjQ2LTEuNjYsMS44Ny0xLjExLDMuMDctMi42NSwzLjYtNC42M2gxNS4zM2MtMS43NSw1LjgtNC44MSwxMC4yNi05LjE1LDEzLjM5LTQuMzUsMy4xMy05LjU0LDQuNjktMTUuNTYsNC42OS0xOC43NiwwLTI4LjE1LTEwLjIyLTI4LjE1LTMwLjY2LDAtNC4zNS42MS04LjI4LDEuODMtMTEuNzksMS4yMi0zLjUxLDIuOTktNi41Miw1LjMyLTkuMDQsMi4zMy0yLjUyLDUuMTctNC40NCw4LjUyLTUuNzgsMy4zNi0xLjMzLDcuMjEtMiwxMS41Ni0yLDguNywwLDE1LjI3LDIuNzgsMTkuNzQsOC4zNSw0LjQ2LDUuNTcsNi42OSwxMy45Niw2LjY5LDI1LjE3aC0zOC43OVpNMTI5LjU0LDQ3Ljk0Yy0uMDgtMi4wNi0uNDQtMy44Ny0xLjA5LTUuNDMtLjY1LTEuNTYtMS41MS0yLjg2LTIuNTctMy44OS0xLjA3LTEuMDMtMi4yOS0xLjc5LTMuNjYtMi4yOS0xLjM3LS40OS0yLjc4LS43NC00LjIzLS43NC0yLjk3LDAtNS41NSwxLjA5LTcuNzIsMy4yNi0yLjE3LDIuMTctMy40MSw1LjIxLTMuNzIsOS4xaDIzWiIvPgogICAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0xODYuNCw4MS41N2MtLjQ2LTEuNDUtLjc2LTMuMTMtLjkyLTUuMDMtMS43NSwxLjk4LTQuMDgsMy41Ny02Ljk4LDQuNzUtMi45LDEuMTgtNi4yNSwxLjc3LTEwLjA3LDEuNzctNi40OCwwLTExLjIzLTEuNDMtMTQuMjQtNC4yOS0zLjAxLTIuODYtNC41Mi02LjU4LTQuNTItMTEuMTYsMC00LjA0LjY1LTcuMjcsMS45NS05LjY3LDEuMy0yLjQsMy4wOS00LjI5LDUuMzgtNS42NiwyLjI5LTEuMzcsNS4wMS0yLjM4LDguMTgtMy4wMywzLjE2LS42NSw2LjYyLTEuMjQsMTAuMzYtMS43NywzLjc0LS41Myw2LjI1LTEuMjQsNy41NS0yLjEyLDEuMy0uODgsMS45NS0yLjMxLDEuOTUtNC4yOSwwLTEuODMtLjg2LTMuMjYtMi41Ny00LjI5LTEuNzItMS4wMy00LjAyLTEuNTQtNi45Mi0xLjU0LTMuNDMsMC01Ljg5Ljc2LTcuMzgsMi4yOS0xLjQ5LDEuNTMtMi40MiwzLjU1LTIuOCw2LjA2aC0xMy44NGMuMDgtMi45LjU1LTUuNTcsMS40My04LjAxLjg4LTIuNDQsMi4yOS00LjU0LDQuMjMtNi4yOSwxLjk1LTEuNzUsNC40OC0zLjExLDcuNjEtNC4wNiwzLjEzLS45NSw2Ljk0LTEuNDMsMTEuNDQtMS40M3M4LjE4LjUsMTEuMjcsMS40OWMzLjA5Ljk5LDUuNTcsMi40Miw3LjQ0LDQuMjksMS44NywxLjg3LDMuMjIsNC4yLDQuMDYsNi45OC44NCwyLjc5LDEuMjYsNS45MywxLjI2LDkuNDR2MzUuNThoLTEzLjg0Wk0xODUuMzcsNTRjLS43Ni43Ni0xLjg3LDEuMzctMy4zMiwxLjgzLTEuNDUuNDYtMy41NS45NS02LjI5LDEuNDktNC4yNy44NC03LjIxLDEuOTEtOC44MSwzLjItMS42LDEuMy0yLjQsMy4xNy0yLjQsNS42MSwwLDQuMiwyLjQsNi4yOSw3LjIxLDYuMjksMS45MSwwLDMuNjgtLjMyLDUuMzItLjk3LDEuNjQtLjY1LDMuMDUtMS41Miw0LjIzLTIuNjMsMS4xOC0xLjExLDIuMTMtMi40LDIuODYtMy44OS43Mi0xLjQ5LDEuMDktMy4wNywxLjA5LTQuNzVsLjExLTYuMThaIi8+CiAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTIzOC42NSw0NC41aDEzLjg0djE2LjAyYzAsMi45Ny0uNDQsNS44Mi0xLjMyLDguNTItLjg4LDIuNzEtMi4yNSw1LjExLTQuMTIsNy4yMS0xLjg3LDIuMS00LjIzLDMuNzYtNy4wOSw0Ljk4LTIuODYsMS4yMi02LjI3LDEuODMtMTAuMjQsMS44M3MtNy42My0uNjEtMTAuNTMtMS44M2MtMi45LTEuMjItNS4yOC0yLjg2LTcuMTUtNC45Mi0xLjg3LTIuMDYtMy4yMi00LjQ2LTQuMDYtNy4yMS0uODQtMi43NS0xLjI2LTUuNjQtMS4yNi04LjdWMTAuMDZoMTQuNjV2MTUuMjJoMzEuMTJ2MTAuNTNoLTMxLjEydjIzLjExYzAsMy41OS42Nyw2LjM1LDIsOC4zLDEuMzMsMS45NCwzLjUzLDIuOTIsNi41OCwyLjkyczUuMTctLjk1LDYuNTgtMi44NmMxLjQxLTEuOTEsMi4xMi00LjYxLDIuMTItOC4xMnYtMTQuNjVaIi8+CiAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTI1OS4yOSw4MS41N1YyNS4yOGgxNC44N3Y1Ni4yOWgtMTQuODdaTTI2Ni44NSwwYzE1LjMzLDAsMTUuMjIsMjAuNzEsMCwyMC43MXMtMTUuMjItMjAuNzEsMC0yMC43MVoiLz4KICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMzE2LjI3LDgxLjU3Yy0uNDYtMS40NS0uNzYtMy4xMy0uOTItNS4wMy0xLjc1LDEuOTgtNC4wOCwzLjU3LTYuOTgsNC43NS0yLjksMS4xOC02LjI1LDEuNzctMTAuMDcsMS43Ny02LjQ4LDAtMTEuMjMtMS40My0xNC4yNC00LjI5LTMuMDEtMi44Ni00LjUyLTYuNTgtNC41Mi0xMS4xNiwwLTQuMDQuNjUtNy4yNywxLjk1LTkuNjcsMS4zLTIuNCwzLjA5LTQuMjksNS4zOC01LjY2LDIuMjktMS4zNyw1LjAxLTIuMzgsOC4xOC0zLjAzLDMuMTYtLjY1LDYuNjItMS4yNCwxMC4zNi0xLjc3LDMuNzQtLjUzLDYuMjUtMS4yNCw3LjU1LTIuMTIsMS4zLS44OCwxLjk1LTIuMzEsMS45NS00LjI5LDAtMS44My0uODYtMy4yNi0yLjU3LTQuMjktMS43Mi0xLjAzLTQuMDItMS41NC02LjkyLTEuNTQtMy40MywwLTUuODkuNzYtNy4zOCwyLjI5LTEuNDksMS41My0yLjQyLDMuNTUtMi44LDYuMDZoLTEzLjg0Yy4wOC0yLjkuNTUtNS41NywxLjQzLTguMDEuODgtMi40NCwyLjI5LTQuNTQsNC4yMy02LjI5LDEuOTUtMS43NSw0LjQ4LTMuMTEsNy42MS00LjA2LDMuMTMtLjk1LDYuOTQtMS40MywxMS40NC0xLjQzczguMTguNSwxMS4yNywxLjQ5YzMuMDkuOTksNS41NywyLjQyLDcuNDQsNC4yOSwxLjg3LDEuODcsMy4yMiw0LjIsNC4wNiw2Ljk4Ljg0LDIuNzksMS4yNiw1LjkzLDEuMjYsOS40NHYzNS41OGgtMTMuODRaTTMxNS4yNCw1NGMtLjc2Ljc2LTEuODcsMS4zNy0zLjMyLDEuODMtMS40NS40Ni0zLjU1Ljk1LTYuMjksMS40OS00LjI3Ljg0LTcuMjEsMS45MS04LjgxLDMuMi0xLjYsMS4zLTIuNCwzLjE3LTIuNCw1LjYxLDAsNC4yLDIuNCw2LjI5LDcuMjEsNi4yOSwxLjkxLDAsMy42OC0uMzIsNS4zMi0uOTcsMS42NC0uNjUsMy4wNS0xLjUyLDQuMjMtMi42MywxLjE4LTEuMTEsMi4xMy0yLjQsMi44Ni0zLjg5LjcyLTEuNDksMS4wOS0zLjA3LDEuMDktNC43NWwuMTEtNi4xOFoiLz4KICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMzczLjA1LDgxLjU3di0zNC4xYzAtNC4zNS0uNzMtNy4yOC0yLjE3LTguODEtMS40NS0xLjUyLTMuOTMtMi4yOS03LjQ0LTIuMjktNy43LDAtMTEuNTYsNC4zMS0xMS41NiwxMi45M3YzMi4yN2gtMTQuODdWMjUuMjhoMTQuMTl2OC4yNGMxLjc1LTMuMiw0LjA4LTUuNjIsNi45OC03LjI3LDIuOS0xLjY0LDYuNjQtMi40NiwxMS4yMS0yLjQ2LDIuNjcsMCw1LjE1LjQsNy40NCwxLjJzNC4yNSwyLDUuODksMy42YzEuNjQsMS42LDIuOTQsMy41NywzLjg5LDUuODkuOTUsMi4zMywxLjQzLDUuMDIsMS40Myw4LjA3djM5LjAyaC0xNC45OVoiLz4KICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNDQ0Ljk1LDYxLjIxYy0uMzgsMy4yOC0xLjMyLDYuMjUtMi44LDguOTItMS40OSwyLjY3LTMuMzgsNC45Ni01LjY2LDYuODctMi4yOSwxLjkxLTQuOSwzLjM5LTcuODQsNC40Ni0yLjk0LDEuMDctNi4xMiwxLjYtOS41NSwxLjYtMy44MSwwLTcuMy0uNjMtMTAuNDctMS44OS0zLjE3LTEuMjYtNS44OS0zLjE2LTguMTgtNS43Mi0yLjI5LTIuNTUtNC4wNi01LjcyLTUuMzItOS41LTEuMjYtMy43OC0xLjg5LTguMTgtMS44OS0xMy4yMnMuNjMtOS4zOCwxLjg5LTEzLjA0YzEuMjYtMy42NiwzLjAzLTYuNjUsNS4zMi04Ljk4LDIuMjktMi4zMyw1LjA1LTQuMDYsOC4zLTUuMjEsMy4yNC0xLjE0LDYuODQtMS43MiwxMC44MS0xLjcyLDMuNjYsMCw3LC41LDEwLjAxLDEuNDksMy4wMS45OSw1LjY0LDIuNDQsNy45LDQuMzUsMi4yNSwxLjkxLDQuMDIsNC4yLDUuMzIsNi44NywxLjMsMi42NywyLjA2LDUuNjUsMi4yOSw4LjkyaC0xNC45OWMtLjM4LTIuOS0xLjU0LTUuMTctMy40OS02LjgxLTEuOTUtMS42NC00LjMzLTIuNDYtNy4xNS0yLjQ2LTEuNiwwLTMuMDkuMjctNC40Ni44LTEuMzcuNTQtMi41NywxLjQzLTMuNiwyLjY5LTEuMDMsMS4yNi0xLjg1LDIuOTQtMi40Niw1LjAzLS42MSwyLjEtLjkxLDQuNjctLjkxLDcuNzIsMCw2LjE4LDEuMSwxMC43NSwzLjMyLDEzLjczLDIuMjEsMi45Nyw0Ljc3LDQuNDYsNy42Nyw0LjQ2czUuMzgtLjgsNy40NC0yLjRjMi4wNi0xLjYsMy4yNC0zLjkzLDMuNTUtNi45OGgxNC45OVoiLz4KICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNDg0Ljg4LDc0LjE0Yy0xLjA3LDIuNTItMyw0LjQ4LTUuNzgsNS44OS0yLjc5LDEuNDEtNS45MywyLjEyLTkuNDQsMi4xMi0yLjk3LDAtNS43Mi0uNDgtOC4yNC0xLjQzLTIuNTItLjk1LTQuNjktMi4zMy02LjUyLTQuMTItMS44My0xLjc5LTMuMjYtMy45My00LjI5LTYuNDEtMS4wMy0yLjQ4LTEuNTQtNS4yOC0xLjU0LTguNDFWMjUuMjhoMTQuODd2MzQuMzJjMCw3LjAyLDMuMTYsMTAuNTMsOS41LDEwLjUzLDMuNDMsMCw2LjItLjk5LDguMjktMi45NywyLjEtMS45OCwzLjE1LTQuNSwzLjE1LTcuNTVWMjUuMjhoMTQuODd2NTcuNzhjMCwzLjk2LS42Nyw3LjUxLTIsMTAuNjQtMS4zNCwzLjEzLTMuMTcsNS43Ni01LjQ5LDcuOS0yLjMzLDIuMTMtNS4wNywzLjc4LTguMjQsNC45Mi0zLjE3LDEuMTQtNi41NCwxLjcyLTEwLjEzLDEuNzItOC4zMSwwLTE0LjUzLTIuMS0xOC42NS02LjI5LTQuMTItNC4yLTYuMTgtOS45NS02LjE4LTE3LjI4aDEzLjg0YzAsMy4zNi45Nyw1Ljk5LDIuOTIsNy45LDEuOTUsMS45MSw0Ljg2LDIuODYsOC43NSwyLjg2LDEuMzcsMCwyLjY3LS4yOSwzLjg5LS44NiwxLjIyLS41NywyLjMxLTEuMzcsMy4yNi0yLjQuOTUtMS4wMywxLjcyLTIuMzEsMi4yOS0zLjgzLjU3LTEuNTMuODYtMy4yLjg2LTUuMDN2LTkuMTVaIi8+CiAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTUxOC4zOCw2MS43OGMxNS4zMywwLDE1LjIyLDIwLjcxLDAsMjAuNzFzLTE1LjIyLTIwLjcxLDAtMjAuNzFaIi8+CiAgICA8L2c+CiAgPC9nPgo8L3N2Zz4KCg==" alt="Creatiancy" height="22" style="display:block;" />
+        </div>
+        <span class="brand-tag">Signature Studio</span>
+      </div>
 
-  <div class="controls-bar">
-    <button class="btn btn-brand" id="copy-signature-btn">
-      <span>Copy Signature</span>
-      <span style="font-size:15px;">&rarr;</span>
-    </button>
-    <button class="btn btn-ghost" id="copy-html-btn">Copy Raw HTML</button>
+      <div class="navbar-actions">
+        <button class="btn btn-primary" id="btn-copy-sig">
+          <span>Copy Signature</span>
+          <span style="font-size:15px;">&rarr;</span>
+        </button>
+        <button class="btn btn-secondary" id="btn-copy-html">Copy HTML</button>
+      </div>
+    </div>
+  </nav>
 
-    <div class="view-switch">
-      <button class="view-btn active" id="btn-desktop-view">Desktop (560px)</button>
-      <button class="view-btn" id="btn-mobile-view">Mobile (380px)</button>
+  <div class="studio-layout">
+    
+    <!-- LEFT PANEL: Interactive Live Canvas -->
+    <div class="studio-panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <span class="dot"></span>
+          <span>Live Signature Preview</span>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="view-toggles">
+            <button class="view-tab active" id="tab-desktop">Desktop (560px)</button>
+            <button class="view-tab" id="tab-mobile">Mobile (380px)</button>
+          </div>
+          <button class="btn-icon" id="btn-toggle-mode" title="Toggle Canvas Background">Light/Dark</button>
+        </div>
+      </div>
+
+      <div class="preview-body" id="canvas-container">
+        <div class="preview-stage" id="preview-wrapper">
+
+          <!-- ==================== SIGNATURE RENDER START ==================== -->
+          <table id="sig-table" role="presentation" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;width:100%;border-collapse:separate;border:1px solid #e3eaf1;border-radius:18px;overflow:hidden;background-color:#ffffff;font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#0a0a0c;-webkit-font-smoothing:antialiased;">
+            <tr>
+              <td style="padding:32px 32px 24px 32px;">
+
+                <!-- 1. Creatiancy Vector Logo -->
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;margin:0 0 20px 0;">
+                  <tr>
+                    <td valign="middle" style="padding:0;">
+                      <a id="sig-logo-link" href="https://creatiancy.com" target="_blank" style="text-decoration:none;display:inline-block;">
+                        <img src="data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMiIgZGF0YS1uYW1lPSJMYXllciAyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MjkuODQgMTA4LjIzIj4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLmNscy0xIHsKICAgICAgICBmaWxsOiAjOWIxYzIyOwogICAgICB9CiAgICA8L3N0eWxlPgogIDwvZGVmcz4KICA8ZyBpZD0iTGF5ZXJfMS0yIiBkYXRhLW5hbWU9IkxheWVyIDEiPgogICAgPGc+CiAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTUxLjcxLDYxLjIxYy0uMzgsMy4yOC0xLjMyLDYuMjUtMi44LDguOTItMS40OSwyLjY3LTMuMzgsNC45Ni01LjY2LDYuODctMi4yOSwxLjkxLTQuOSwzLjM5LTcuODQsNC40Ni0yLjk0LDEuMDctNi4xMiwxLjYtOS41NSwxLjYtMy44MSwwLTcuMy0uNjMtMTAuNDctMS44OS0zLjE3LTEuMjYtNS44OS0zLjE2LTguMTgtNS43Mi0yLjI5LTIuNTUtNC4wNi01LjcyLTUuMzItOS41LTEuMjYtMy43OC0xLjg5LTguMTgtMS44OS0xMy4yMnMuNjMtOS4zOCwxLjg5LTEzLjA0YzEuMjYtMy42NiwzLjAzLTYuNjUsNS4zMi04Ljk4LDIuMjktMi4zMyw1LjA1LTQuMDYsOC4zLTUuMjEsMy4yNC0xLjE0LDYuODQtMS43MiwxMC44MS0xLjcyLDMuNjYsMCw3LC41LDEwLjAxLDEuNDksMy4wMS45OSw1LjY0LDIuNDQsNy45LDQuMzUsMi4yNSwxLjkxLDQuMDIsNC4yLDUuMzIsNi44NywxLjMsMi42NywyLjA2LDUuNjUsMi4yOSw4LjkyaC0xNC45OWMtLjM4LTIuOS0xLjU0LTUuMTctMy40OS02LjgxLTEuOTUtMS42NC00LjMzLTIuNDYtNy4xNS0yLjQ2LTEuNiwwLTMuMDkuMjctNC40Ni44LTEuMzcuNTQtMi41NywxLjQzLTMuNiwyLjY5LTEuMDMsMS4yNi0xLjg1LDIuOTQtMi40Niw1LjAzLS42MSwyLjEtLjkxLDQuNjctLjkxLDcuNzIsMCw2LjE4LDEuMSwxMC43NSwzLjMyLDEzLjczLDIuMjEsMi45Nyw0Ljc3LDQuNDYsNy42Nyw0LjQ2czUuMzgtLjgsNy40NC0yLjRjMi4wNi0xLjYsMy4yNC0zLjkzLDMuNTUtNi45OGgxNC45OVoiLz4KICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNTcuMjEsODEuNTdWMjUuMjhoMTMuOTZ2Ni43NWMxLjIyLTEuOTEsMi41LTMuMzksMy44My00LjQ2LDEuMzMtMS4wNywyLjcxLTEuODksNC4xMi0yLjQ2LDEuNDEtLjU3LDIuODQtLjkzLDQuMjktMS4wOSwxLjQ1LS4xNSwyLjk0LS4yMyw0LjQ2LS4yM2gxLjk1djE1LjIyYy0xLjM3LS4yMy0yLjc1LS4zNC00LjEyLS4zNC05LjA4LDAtMTMuNjIsNC41NC0xMy42MiwxMy42MnYyOS4yOWgtMTQuODdaIi8+CiAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTEwNi4wOCw1Ny4zMmMuMjMsNC4yNywxLjQ3LDcuNjcsMy43MiwxMC4xOCwyLjI1LDIuNTIsNS4yMSwzLjc4LDguODcsMy43OCwyLjQ0LDAsNC42LS41NSw2LjQ2LTEuNjYsMS44Ny0xLjExLDMuMDctMi42NSwzLjYtNC42M2gxNS4zM2MtMS43NSw1LjgtNC44MSwxMC4yNi05LjE1LDEzLjM5LTQuMzUsMy4xMy05LjU0LDQuNjktMTUuNTYsNC42OS0xOC43NiwwLTI4LjE1LTEwLjIyLTI4LjE1LTMwLjY2LDAtNC4zNS42MS04LjI4LDEuODMtMTEuNzksMS4yMi0zLjUxLDIuOTktNi41Miw1LjMyLTkuMDQsMi4zMy0yLjUyLDUuMTctNC40NCw4LjUyLTUuNzgsMy4zNi0xLjMzLDcuMjEtMiwxMS41Ni0yLDguNywwLDE1LjI3LDIuNzgsMTkuNzQsOC4zNSw0LjQ2LDUuNTcsNi42OSwxMy45Niw2LjY5LDI1LjE3aC0zOC43OVpNMTI5LjU0LDQ3Ljk0Yy0uMDgtMi4wNi0uNDQtMy44Ny0xLjA5LTUuNDMtLjY1LTEuNTYtMS41MS0yLjg2LTIuNTctMy44OS0xLjA3LTEuMDMtMi4yOS0xLjc5LTMuNjYtMi4yOS0xLjM3LS40OS0yLjc4LS43NC00LjIzLS43NC0yLjk3LDAtNS41NSwxLjA5LTcuNzIsMy4yNi0yLjE3LDIuMTctMy40MSw1LjIxLTMuNzIsOS4xaDIzWiIvPgogICAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0xODYuNCw4MS41N2MtLjQ2LTEuNDUtLjc2LTMuMTMtLjkyLTUuMDMtMS43NSwxLjk4LTQuMDgsMy41Ny02Ljk4LDQuNzUtMi45LDEuMTgtNi4yNSwxLjc3LTEwLjA3LDEuNzctNi40OCwwLTExLjIzLTEuNDMtMTQuMjQtNC4yOS0zLjAxLTIuODYtNC41Mi02LjU4LTQuNTItMTEuMTYsMC00LjA0LjY1LTcuMjcsMS45NS05LjY3LDEuMy0yLjQsMy4wOS00LjI5LDUuMzgtNS42NiwyLjI5LTEuMzcsNS4wMS0yLjM4LDguMTgtMy4wMywzLjE2LS42NSw2LjYyLTEuMjQsMTAuMzYtMS43NywzLjc0LS41Myw2LjI1LTEuMjQsNy41NS0yLjEyLDEuMy0uODgsMS45NS0yLjMxLDEuOTUtNC4yOSwwLTEuODMtLjg2LTMuMjYtMi41Ny00LjI5LTEuNzItMS4wMy00LjAyLTEuNTQtNi45Mi0xLjU0LTMuNDMsMC01Ljg5Ljc2LTcuMzgsMi4yOS0xLjQ5LDEuNTMtMi40MiwzLjU1LTIuOCw2LjA2aC0xMy44NGMuMDgtMi45LjU1LTUuNTcsMS40My04LjAxLjg4LTIuNDQsMi4yOS00LjU0LDQuMjMtNi4yOSwxLjk1LTEuNzUsNC40OC0zLjExLDcuNjEtNC4wNiwzLjEzLS45NSw2Ljk0LTEuNDMsMTEuNDQtMS40M3M4LjE4LjUsMTEuMjcsMS40OWMzLjA5Ljk5LDUuNTcsMi40Miw3LjQ0LDQuMjksMS44NywxLjg3LDMuMjIsNC4yLDQuMDYsNi45OC44NCwyLjc5LDEuMjYsNS45MywxLjI2LDkuNDR2MzUuNThoLTEzLjg0Wk0xODUuMzcsNTRjLS43Ni43Ni0xLjg3LDEuMzctMy4zMiwxLjgzLTEuNDUuNDYtMy41NS45NS02LjI5LDEuNDktNC4yNy44NC03LjIxLDEuOTEtOC44MSwzLjItMS42LDEuMy0yLjQsMy4xNy0yLjQsNS42MSwwLDQuMiwyLjQsNi4yOSw3LjIxLDYuMjksMS45MSwwLDMuNjgtLjMyLDUuMzItLjk3LDEuNjQtLjY1LDMuMDUtMS41Miw0LjIzLTIuNjMsMS4xOC0xLjExLDIuMTMtMi40LDIuODYtMy44OS43Mi0xLjQ5LDEuMDktMy4wNywxLjA5LTQuNzVsLjExLTYuMThaIi8+CiAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTIzOC42NSw0NC41aDEzLjg0djE2LjAyYzAsMi45Ny0uNDQsNS44Mi0xLjMyLDguNTItLjg4LDIuNzEtMi4yNSw1LjExLTQuMTIsNy4yMS0xLjg3LDIuMS00LjIzLDMuNzYtNy4wOSw0Ljk4LTIuODYsMS4yMi02LjI3LDEuODMtMTAuMjQsMS44M3MtNy42My0uNjEtMTAuNTMtMS44M2MtMi45LTEuMjItNS4yOC0yLjg2LTcuMTUtNC45Mi0xLjg3LTIuMDYtMy4yMi00LjQ2LTQuMDYtNy4yMS0uODQtMi43NS0xLjI2LTUuNjQtMS4yNi04LjdWMTAuMDZoMTQuNjV2MTUuMjJoMzEuMTJ2MTAuNTNoLTMxLjEydjIzLjExYzAsMy41OS42Nyw2LjM1LDIsOC4zLDEuMzMsMS45NCwzLjUzLDIuOTIsNi41OCwyLjkyczUuMTctLjk1LDYuNTgtMi44NmMxLjQxLTEuOTEsMi4xMi00LjYxLDIuMTItOC4xMnYtMTQuNjVaIi8+CiAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTI1OS4yOSw4MS41N1YyNS4yOGgxNC44N3Y1Ni4yOWgtMTQuODdaTTI2Ni44NSwwYzE1LjMzLDAsMTUuMjIsMjAuNzEsMCwyMC43MXMtMTUuMjItMjAuNzEsMC0yMC43MVoiLz4KICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMzE2LjI3LDgxLjU3Yy0uNDYtMS40NS0uNzYtMy4xMy0uOTItNS4wMy0xLjc1LDEuOTgtNC4wOCwzLjU3LTYuOTgsNC43NS0yLjksMS4xOC02LjI1LDEuNzctMTAuMDcsMS43Ny02LjQ4LDAtMTEuMjMtMS40My0xNC4yNC00LjI5LTMuMDEtMi44Ni00LjUyLTYuNTgtNC41Mi0xMS4xNiwwLTQuMDQuNjUtNy4yNywxLjk1LTkuNjcsMS4zLTIuNCwzLjA5LTQuMjksNS4zOC01LjY2LDIuMjktMS4zNyw1LjAxLTIuMzgsOC4xOC0zLjAzLDMuMTYtLjY1LDYuNjItMS4yNCwxMC4zNi0xLjc3LDMuNzQtLjUzLDYuMjUtMS4yNCw3LjU1LTIuMTIsMS4zLS44OCwxLjk1LTIuMzEsMS45NS00LjI5LDAtMS44My0uODYtMy4yNi0yLjU3LTQuMjktMS43Mi0xLjAzLTQuMDItMS41NC02LjkyLTEuNTQtMy40MywwLTUuODkuNzYtNy4zOCwyLjI5LTEuNDksMS41My0yLjQyLDMuNTUtMi44LDYuMDZoLTEzLjg0Yy4wOC0yLjkuNTUtNS41NywxLjQzLTguMDEuODgtMi40NCwyLjI5LTQuNTQsNC4yMy02LjI5LDEuOTUtMS43NSw0LjQ4LTMuMTEsNy42MS00LjA2LDMuMTMtLjk1LDYuOTQtMS40MywxMS40NC0xLjQzczguMTguNSwxMS4yNywxLjQ5YzMuMDkuOTksNS41NywyLjQyLDcuNDQsNC4yOSwxLjg3LDEuODcsMy4yMiw0LjIsNC4wNiw2Ljk4Ljg0LDIuNzksMS4yNiw1LjkzLDEuMjYsOS40NHYzNS41OGgtMTMuODRaTTMxNS4yNCw1NGMtLjc2Ljc2LTEuODcsMS4zNy0zLjMyLDEuODMtMS40NS40Ni0zLjU1Ljk1LTYuMjksMS40OS00LjI3Ljg0LTcuMjEsMS45MS04LjgxLDMuMi0xLjYsMS4zLTIuNCwzLjE3LTIuNCw1LjYxLDAsNC4yLDIuNCw2LjI5LDcuMjEsNi4yOSwxLjkxLDAsMy42OC0uMzIsNS4zMi0uOTcsMS42NC0uNjUsMy4wNS0xLjUyLDQuMjMtMi42MywxLjE4LTEuMTEsMi4xMy0yLjQsMi44Ni0zLjg5LjcyLTEuNDksMS4wOS0zLjA3LDEuMDktNC43NWwuMTEtNi4xOFoiLz4KICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMzczLjA1LDgxLjU3di0zNC4xYzAtNC4zNS0uNzMtNy4yOC0yLjE3LTguODEtMS40NS0xLjUyLTMuOTMtMi4yOS03LjQ0LTIuMjktNy43LDAtMTEuNTYsNC4zMS0xMS41NiwxMi45M3YzMi4yN2gtMTQuODdWMjUuMjhoMTQuMTl2OC4yNGMxLjc1LTMuMiw0LjA4LTUuNjIsNi45OC03LjI3LDIuOS0xLjY0LDYuNjQtMi40NiwxMS4yMS0yLjQ2LDIuNjcsMCw1LjE1LjQsNy40NCwxLjJzNC4yNSwyLDUuODksMy42YzEuNjQsMS42LDIuOTQsMy41NywzLjg5LDUuODkuOTUsMi4zMywxLjQzLDUuMDIsMS40Myw4LjA3djM5LjAyaC0xNC45OVoiLz4KICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNDQ0Ljk1LDYxLjIxYy0uMzgsMy4yOC0xLjMyLDYuMjUtMi44LDguOTItMS40OSwyLjY3LTMuMzgsNC45Ni01LjY2LDYuODctMi4yOSwxLjkxLTQuOSwzLjM5LTcuODQsNC40Ni0yLjk0LDEuMDctNi4xMiwxLjYtOS41NSwxLjYtMy44MSwwLTcuMy0uNjMtMTAuNDctMS44OS0zLjE3LTEuMjYtNS44OS0zLjE2LTguMTgtNS43Mi0yLjI5LTIuNTUtNC4wNi01LjcyLTUuMzItOS41LTEuMjYtMy43OC0xLjg5LTguMTgtMS44OS0xMy4yMnMuNjMtOS4zOCwxLjg5LTEzLjA0YzEuMjYtMy42NiwzLjAzLTYuNjUsNS4zMi04Ljk4LDIuMjktMi4zMyw1LjA1LTQuMDYsOC4zLTUuMjEsMy4yNC0xLjE0LDYuODQtMS43MiwxMC44MS0xLjcyLDMuNjYsMCw3LC41LDEwLjAxLDEuNDksMy4wMS45OSw1LjY0LDIuNDQsNy45LDQuMzUsMi4yNSwxLjkxLDQuMDIsNC4yLDUuMzIsNi44NywxLjMsMi42NywyLjA2LDUuNjUsMi4yOSw4LjkyaC0xNC45OWMtLjM4LTIuOS0xLjU0LTUuMTctMy40OS02LjgxLTEuOTUtMS42NC00LjMzLTIuNDYtNy4xNS0yLjQ2LTEuNiwwLTMuMDkuMjctNC40Ni44LTEuMzcuNTQtMi41NywxLjQzLTMuNiwyLjY5LTEuMDMsMS4yNi0xLjg1LDIuOTQtMi40Niw1LjAzLS42MSwyLjEtLjkxLDQuNjctLjkxLDcuNzIsMCw2LjE4LDEuMSwxMC43NSwzLjMyLDEzLjczLDIuMjEsMi45Nyw0Ljc3LDQuNDYsNy42Nyw0LjQ2czUuMzgtLjgsNy40NC0yLjRjMi4wNi0xLjYsMy4yNC0zLjkzLDMuNTUtNi45OGgxNC45OVoiLz4KICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNDg0Ljg4LDc0LjE0Yy0xLjA3LDIuNTItMyw0LjQ4LTUuNzgsNS44OS0yLjc5LDEuNDEtNS45MywyLjEyLTkuNDQsMi4xMi0yLjk3LDAtNS43Mi0uNDgtOC4yNC0xLjQzLTIuNTItLjk1LTQuNjktMi4zMy02LjUyLTQuMTItMS44My0xLjc5LTMuMjYtMy45My00LjI5LTYuNDEtMS4wMy0yLjQ4LTEuNTQtNS4yOC0xLjU0LTguNDFWMjUuMjhoMTQuODd2MzQuMzJjMCw3LjAyLDMuMTYsMTAuNTMsOS41LDEwLjUzLDMuNDMsMCw2LjItLjk5LDguMjktMi45NywyLjEtMS45OCwzLjE1LTQuNSwzLjE1LTcuNTVWMjUuMjhoMTQuODd2NTcuNzhjMCwzLjk2LS42Nyw3LjUxLTIsMTAuNjQtMS4zNCwzLjEzLTMuMTcsNS43Ni01LjQ5LDcuOS0yLjMzLDIuMTMtNS4wNywzLjc4LTguMjQsNC45Mi0zLjE3LDEuMTQtNi41NCwxLjcyLTEwLjEzLDEuNzItOC4zMSwwLTE0LjUzLTIuMS0xOC42NS02LjI5LTQuMTItNC4yLTYuMTgtOS45NS02LjE4LTE3LjI4aDEzLjg0YzAsMy4zNi45Nyw1Ljk5LDIuOTIsNy45LDEuOTUsMS45MSw0Ljg2LDIuODYsOC43NSwyLjg2LDEuMzcsMCwyLjY3LS4yOSwzLjg5LS44NiwxLjIyLS41NywyLjMxLTEuMzcsMy4yNi0yLjQuOTUtMS4wMywxLjcyLTIuMzEsMi4yOS0zLjgzLjU3LTEuNTMuODYtMy4yLjg2LTUuMDN2LTkuMTVaIi8+CiAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTUxOC4zOCw2MS43OGMxNS4zMywwLDE1LjIyLDIwLjcxLDAsMjAuNzFzLTE1LjIyLTIwLjcxLDAtMjAuNzFaIi8+CiAgICA8L2c+CiAgPC9nPgo8L3N2Zz4KCg==" alt="creatiancy." width="155" height="32" style="display:block;width:155px;height:auto;max-height:34px;border:0;" />
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+
+                <!-- 2. Statement & Services -->
+                <div id="sig-headline" style="font-size:20px;line-height:26px;font-weight:700;letter-spacing:-0.4px;color:#0a0a0c;margin:0 0 6px 0;">
+                  Engineering brands that refuse to be ignored.
+                </div>
+                <div id="sig-subline" style="font-size:13px;line-height:20px;font-weight:500;color:#6e6e73;margin:0 0 18px 0;">
+                  Strategy &nbsp;&middot;&nbsp; Digital &nbsp;&middot;&nbsp; Creative &nbsp;&middot;&nbsp; Growth
+                </div>
+
+                <!-- 3. Red Accent Underline + Divider -->
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;margin:0 0 22px 0;">
+                  <tr>
+                    <td width="42" height="2" bgcolor="#9b1c22" style="width:42px;height:2px;background-color:#9b1c22;line-height:2px;font-size:2px;border-radius:1px;">&nbsp;</td>
+                    <td height="1" bgcolor="#e9eef4" style="height:1px;background-color:#e9eef4;line-height:1px;font-size:1px;">&nbsp;</td>
+                  </tr>
+                </table>
+
+                <!-- 4. Contact Columns (WEB, CALL, MAIL) -->
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;margin:0 0 24px 0;">
+                  <tr>
+                    <!-- Web -->
+                    <td valign="top" style="padding:0 18px 0 0;white-space:nowrap;">
+                      <div style="font-size:10px;line-height:14px;font-weight:700;letter-spacing:0.8px;color:#86868b;text-transform:uppercase;margin-bottom:3px;">WEB</div>
+                      <a id="sig-web" href="https://creatiancy.com" target="_blank" style="font-size:13px;line-height:18px;font-weight:500;color:#0a0a0c;text-decoration:none;">creatiancy.com</a>
+                    </td>
+                    <!-- Call -->
+                    <td valign="top" style="padding:0 18px 0 0;white-space:nowrap;">
+                      <div style="font-size:10px;line-height:14px;font-weight:700;letter-spacing:0.8px;color:#86868b;text-transform:uppercase;margin-bottom:3px;">CALL</div>
+                      <a id="sig-phone" href="tel:+8801325078941" style="font-size:13px;line-height:18px;font-weight:500;color:#0a0a0c;text-decoration:none;">+880 1325 078 941</a>
+                    </td>
+                    <!-- Mail -->
+                    <td valign="top" style="padding:0;white-space:nowrap;">
+                      <div style="font-size:10px;line-height:14px;font-weight:700;letter-spacing:0.8px;color:#86868b;text-transform:uppercase;margin-bottom:3px;">MAIL</div>
+                      <a id="sig-email" href="mailto:hello@creatiancy.com" style="font-size:13px;line-height:18px;font-weight:500;color:#0a0a0c;text-decoration:none;">hello@creatiancy.com</a>
+                    </td>
+                  </tr>
+                </table>
+
+                <!-- 5. Interactive Pill Action CTAs -->
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+                  <tr>
+                    <!-- CTA 1: Let's talk -->
+                    <td style="padding:0 12px 0 0;">
+                      <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="background-color:#050507;border-radius:100px;border-collapse:separate;">
+                        <tr>
+                          <td style="padding:0 10px 0 18px;height:42px;vertical-align:middle;">
+                            <a id="sig-btn1-link" href="https://creatiancy.com/contact" target="_blank" style="color:#ffffff;text-decoration:none;font-size:13px;font-weight:700;white-space:nowrap;line-height:42px;display:inline-block;"><span id="sig-btn1-text">Let&rsquo;s talk</span></a>
+                          </td>
+                          <td style="padding:0 7px 0 0;vertical-align:middle;">
+                            <a id="sig-btn1-icon-link" href="https://creatiancy.com/contact" target="_blank" style="text-decoration:none;display:block;">
+                              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyOCIgaGVpZ2h0PSIyOCIgdmlld0JveD0iMCAwIDI4IDI4IiBmaWxsPSJub25lIj4KICA8Y2lyY2xlIGN4PSIxNCIgY3k9IjE0IiByPSIxNCIgZmlsbD0iIzliMWMyMiIvPgogIDxwYXRoIGQ9Ik04IDE0SDE5LjVNMTkuNSAxNEwxNSA5LjVNMTkuNSAxNEwxNSAxOC41IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4=" alt="&rarr;" width="28" height="28" style="display:block;width:28px;height:28px;border:0;border-radius:50%;" />
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+
+                    <!-- CTA 2: View our work -->
+                    <td style="padding:0;">
+                      <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;border:1.5px solid #050507;border-radius:100px;border-collapse:separate;">
+                        <tr>
+                          <td style="padding:0 10px 0 18px;height:40px;vertical-align:middle;">
+                            <a id="sig-btn2-link" href="https://creatiancy.com/work" target="_blank" style="color:#050507;text-decoration:none;font-size:13px;font-weight:700;white-space:nowrap;line-height:40px;display:inline-block;"><span id="sig-btn2-text">View our work</span></a>
+                          </td>
+                          <td style="padding:0 7px 0 0;vertical-align:middle;">
+                            <a id="sig-btn2-icon-link" href="https://creatiancy.com/work" target="_blank" style="text-decoration:none;display:block;">
+                              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyOCIgaGVpZ2h0PSIyOCIgdmlld0JveD0iMCAwIDI4IDI4IiBmaWxsPSJub25lIj4KICA8Y2lyY2xlIGN4PSIxNCIgY3k9IjE0IiByPSIxNCIgZmlsbD0iIzA1MDUwNyIvPgogIDxwYXRoIGQ9Ik04IDE0SDE5LjVNMTkuNSAxNEwxNSA5LjVNMTkuNSAxNEwxNSAxOC41IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4=" alt="&rarr;" width="28" height="28" style="display:block;width:28px;height:28px;border:0;border-radius:50%;" />
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+
+              </td>
+            </tr>
+
+            <!-- 6. Bottom Banner Strip: THINK TOGETHER & Social Channels -->
+            <tr>
+              <td bgcolor="#f9f9fb" style="background-color:#f9f9fb;border-top:1px solid #e3eaf1;padding:14px 32px;">
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;">
+                  <tr>
+                    <!-- Accent Line + Slogan -->
+                    <td valign="middle" style="white-space:nowrap;">
+                      <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+                        <tr>
+                          <td width="18" height="2" bgcolor="#9b1c22" style="width:18px;height:2px;background-color:#9b1c22;line-height:2px;font-size:2px;border-radius:1px;">&nbsp;</td>
+                          <td id="sig-slogan" style="padding-left:10px;font-size:11px;line-height:14px;font-weight:800;letter-spacing:1.4px;color:#2c2c2e;text-transform:uppercase;">
+                            THINK TOGETHER
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+
+                    <!-- Social Links -->
+                    <td align="right" valign="middle" style="text-align:right;font-size:12px;line-height:16px;">
+                      <a id="sig-behance" href="https://behance.net/creatiancy" target="_blank" style="color:#6e6e73;text-decoration:none;font-weight:500;">Behance</a>
+                      <span style="padding:0 6px;color:#d2d2d7;">&nbsp;</span>
+                      <a id="sig-linkedin" href="https://linkedin.com/company/creatiancy" target="_blank" style="color:#6e6e73;text-decoration:none;font-weight:500;">LinkedIn</a>
+                      <span style="padding:0 6px;color:#d2d2d7;">&nbsp;</span>
+                      <a id="sig-instagram" href="https://instagram.com/creatiancy" target="_blank" style="color:#6e6e73;text-decoration:none;font-weight:500;">Instagram</a>
+                      <span style="padding:0 6px;color:#d2d2d7;">&nbsp;</span>
+                      <a id="sig-facebook" href="https://facebook.com/creatiancy" target="_blank" style="color:#6e6e73;text-decoration:none;font-weight:500;">Facebook</a>
+                      <span style="padding:0 6px;color:#d2d2d7;">&nbsp;</span>
+                      <a id="sig-x" href="https://x.com/creatiancy" target="_blank" style="color:#6e6e73;text-decoration:none;font-weight:500;">X</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+          <!-- ==================== SIGNATURE RENDER END ==================== -->
+
+        </div>
+      </div>
     </div>
 
-    <button class="btn btn-ghost" id="btn-toggle-bg">Toggle Background</button>
-  </div>
+    <!-- RIGHT PANEL: Live No-Code Information Customizer -->
+    <div class="studio-panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <span>Signature Details Customizer</span>
+        </div>
+        <button class="btn-icon" id="btn-reset-defaults">Reset to Default</button>
+      </div>
 
-  <main class="preview-canvas">
-    <div class="signature-card-outer" id="preview-outer">
-      <div id="signature-stage">
+      <div class="form-body">
         
-        <!-- ==================== BEGIN CREATIANCY EMAIL SIGNATURE ==================== -->
-        <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;width:100%;border-collapse:separate;border:1px solid #e3eaf1;border-radius:18px;overflow:hidden;background-color:#ffffff;font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#0a0a0c;-webkit-font-smoothing:antialiased;">
-          <tr>
-            <td style="padding:32px 32px 24px 32px;">
+        <!-- Section: Tagline & Services -->
+        <div class="form-section">
+          <div class="section-headline">Hero Headline &amp; Tagline</div>
+          <div class="form-group">
+            <label for="inp-headline">Main Headline</label>
+            <input type="text" id="inp-headline" value="Engineering brands that refuse to be ignored.">
+          </div>
+          <div class="form-group">
+            <label for="inp-subline">Services / Subline (Separated with &middot;)</label>
+            <input type="text" id="inp-subline" value="Strategy &middot; Digital &middot; Creative &middot; Growth">
+          </div>
+        </div>
 
-              <!-- 1. Creatiancy Official Vector Logo -->
-              <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;margin:0 0 20px 0;">
-                <tr>
-                  <td valign="middle" style="padding:0;">
-                    <a href="https://creatiancy.com" target="_blank" style="text-decoration:none;display:inline-block;">
-                      <img src="data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMiIgZGF0YS1uYW1lPSJMYXllciAyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MjkuODQgMTA4LjIzIj4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLmNscy0xIHsKICAgICAgICBmaWxsOiAjOWIxYzIyOwogICAgICB9CiAgICA8L3N0eWxlPgogIDwvZGVmcz4KICA8ZyBpZD0iTGF5ZXJfMS0yIiBkYXRhLW5hbWU9IkxheWVyIDEiPgogICAgPGc+CiAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTUxLjcxLDYxLjIxYy0uMzgsMy4yOC0xLjMyLDYuMjUtMi44LDguOTItMS40OSwyLjY3LTMuMzgsNC45Ni01LjY2LDYuODctMi4yOSwxLjkxLTQuOSwzLjM5LTcuODQsNC40Ni0yLjk0LDEuMDctNi4xMiwxLjYtOS41NSwxLjYtMy44MSwwLTcuMy0uNjMtMTAuNDctMS44OS0zLjE3LTEuMjYtNS44OS0zLjE2LTguMTgtNS43Mi0yLjI5LTIuNTUtNC4wNi01LjcyLTUuMzItOS41LTEuMjYtMy43OC0xLjg5LTguMTgtMS44OS0xMy4yMnMuNjMtOS4zOCwxLjg5LTEzLjA0YzEuMjYtMy42NiwzLjAzLTYuNjUsNS4zMi04Ljk4LDIuMjktMi4zMyw1LjA1LTQuMDYsOC4zLTUuMjEsMy4yNC0xLjE0LDYuODQtMS43MiwxMC44MS0xLjcyLDMuNjYsMCw3LC41LDEwLjAxLDEuNDksMy4wMS45OSw1LjY0LDIuNDQsNy45LDQuMzUsMi4yNSwxLjkxLDQuMDIsNC4yLDUuMzIsNi44NywxLjMsMi42NywyLjA2LDUuNjUsMi4yOSw4LjkyaC0xNC45OWMtLjM4LTIuOS0xLjU0LTUuMTctMy40OS02LjgxLTEuOTUtMS42NC00LjMzLTIuNDYtNy4xNS0yLjQ2LTEuNiwwLTMuMDkuMjctNC40Ni44LTEuMzcuNTQtMi41NywxLjQzLTMuNiwyLjY5LTEuMDMsMS4yNi0xLjg1LDIuOTQtMi40Niw1LjAzLS42MSwyLjEtLjkxLDQuNjctLjkxLDcuNzIsMCw2LjE4LDEuMSwxMC43NSwzLjMyLDEzLjczLDIuMjEsMi45Nyw0Ljc3LDQuNDYsNy42Nyw0LjQ2czUuMzgtLjgsNy40NC0yLjRjMi4wNi0xLjYsMy4yNC0zLjkzLDMuNTUtNi45OGgxNC45OVoiLz4KICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNTcuMjEsODEuNTdWMjUuMjhoMTMuOTZ2Ni43NWMxLjIyLTEuOTEsMi41LTMuMzksMy44My00LjQ2LDEuMzMtMS4wNywyLjcxLTEuODksNC4xMi0yLjQ2LDEuNDEtLjU3LDIuODQtLjkzLDQuMjktMS4wOSwxLjQ1LS4xNSwyLjk0LS4yMyw0LjQ2LS4yM2gxLjk1djE1LjIyYy0xLjM3LS4yMy0yLjc1LS4zNC00LjEyLS4zNC05LjA4LDAtMTMuNjIsNC41NC0xMy42MiwxMy42MnYyOS4yOWgtMTQuODdaIi8+CiAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTEwNi4wOCw1Ny4zMmMuMjMsNC4yNywxLjQ3LDcuNjcsMy43MiwxMC4xOCwyLjI1LDIuNTIsNS4yMSwzLjc4LDguODcsMy43OCwyLjQ0LDAsNC42LS41NSw2LjQ2LTEuNjYsMS44Ny0xLjExLDMuMDctMi42NSwzLjYtNC42M2gxNS4zM2MtMS43NSw1LjgtNC44MSwxMC4yNi05LjE1LDEzLjM5LTQuMzUsMy4xMy05LjU0LDQuNjktMTUuNTYsNC42OS0xOC43NiwwLTI4LjE1LTEwLjIyLTI4LjE1LTMwLjY2LDAtNC4zNS42MS04LjI4LDEuODMtMTEuNzksMS4yMi0zLjUxLDIuOTktNi41Miw1LjMyLTkuMDQsMi4zMy0yLjUyLDUuMTctNC40NCw4LjUyLTUuNzgsMy4zNi0xLjMzLDcuMjEtMiwxMS41Ni0yLDguNywwLDE1LjI3LDIuNzgsMTkuNzQsOC4zNSw0LjQ2LDUuNTcsNi42OSwxMy45Niw2LjY5LDI1LjE3aC0zOC43OVpNMTI5LjU0LDQ3Ljk0Yy0uMDgtMi4wNi0uNDQtMy44Ny0xLjA5LTUuNDMtLjY1LTEuNTYtMS41MS0yLjg2LTIuNTctMy44OS0xLjA3LTEuMDMtMi4yOS0xLjc5LTMuNjYtMi4yOS0xLjM3LS40OS0yLjc4LS43NC00LjIzLS43NC0yLjk3LDAtNS41NSwxLjA5LTcuNzIsMy4yNi0yLjE3LDIuMTctMy40MSw1LjIxLTMuNzIsOS4xaDIzWiIvPgogICAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0xODYuNCw4MS41N2MtLjQ2LTEuNDUtLjc2LTMuMTMtLjkyLTUuMDMtMS43NSwxLjk4LTQuMDgsMy41Ny02Ljk4LDQuNzUtMi45LDEuMTgtNi4yNSwxLjc3LTEwLjA3LDEuNzctNi40OCwwLTExLjIzLTEuNDMtMTQuMjQtNC4yOS0zLjAxLTIuODYtNC41Mi02LjU4LTQuNTItMTEuMTYsMC00LjA0LjY1LTcuMjcsMS45NS05LjY3LDEuMy0yLjQsMy4wOS00LjI5LDUuMzgtNS42NiwyLjI5LTEuMzcsNS4wMS0yLjM4LDguMTgtMy4wMywzLjE2LS42NSw2LjYyLTEuMjQsMTAuMzYtMS43NywzLjc0LS41Myw2LjI1LTEuMjQsNy41NS0yLjEyLDEuMy0uODgsMS45NS0yLjMxLDEuOTUtNC4yOSwwLTEuODMtLjg2LTMuMjYtMi41Ny00LjI5LTEuNzItMS4wMy00LjAyLTEuNTQtNi45Mi0xLjU0LTMuNDMsMC01Ljg5Ljc2LTcuMzgsMi4yOS0xLjQ5LDEuNTMtMi40MiwzLjU1LTIuOCw2LjA2aC0xMy44NGMuMDgtMi45LjU1LTUuNTcsMS40My04LjAxLjg4LTIuNDQsMi4yOS00LjU0LDQuMjMtNi4yOSwxLjk1LTEuNzUsNC40OC0zLjExLDcuNjEtNC4wNiwzLjEzLS45NSw2Ljk0LTEuNDMsMTEuNDQtMS40M3M4LjE4LjUsMTEuMjcsMS40OWMzLjA5Ljk5LDUuNTcsMi40Miw3LjQ0LDQuMjksMS44NywxLjg3LDMuMjIsNC4yLDQuMDYsNi45OC44NCwyLjc5LDEuMjYsNS45MywxLjI2LDkuNDR2MzUuNThoLTEzLjg0Wk0xODUuMzcsNTRjLS43Ni43Ni0xLjg3LDEuMzctMy4zMiwxLjgzLTEuNDUuNDYtMy41NS45NS02LjI5LDEuNDktNC4yNy44NC03LjIxLDEuOTEtOC44MSwzLjItMS42LDEuMy0yLjQsMy4xNy0yLjQsNS42MSwwLDQuMiwyLjQsNi4yOSw3LjIxLDYuMjksMS45MSwwLDMuNjgtLjMyLDUuMzItLjk3LDEuNjQtLjY1LDMuMDUtMS41Miw0LjIzLTIuNjMsMS4xOC0xLjExLDIuMTMtMi40LDIuODYtMy44OS43Mi0xLjQ5LDEuMDktMy4wNywxLjA5LTQuNzVsLjExLTYuMThaIi8+CiAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTIzOC42NSw0NC41aDEzLjg0djE2LjAyYzAsMi45Ny0uNDQsNS44Mi0xLjMyLDguNTItLjg4LDIuNzEtMi4yNSw1LjExLTQuMTIsNy4yMS0xLjg3LDIuMS00LjIzLDMuNzYtNy4wOSw0Ljk4LTIuODYsMS4yMi02LjI3LDEuODMtMTAuMjQsMS44M3MtNy42My0uNjEtMTAuNTMtMS44M2MtMi45LTEuMjItNS4yOC0yLjg2LTcuMTUtNC45Mi0xLjg3LTIuMDYtMy4yMi00LjQ2LTQuMDYtNy4yMS0uODQtMi43NS0xLjI2LTUuNjQtMS4yNi04LjdWMTAuMDZoMTQuNjV2MTUuMjJoMzEuMTJ2MTAuNTNoLTMxLjEydjIzLjExYzAsMy41OS42Nyw2LjM1LDIsOC4zLDEuMzMsMS45NCwzLjUzLDIuOTIsNi41OCwyLjkyczUuMTctLjk1LDYuNTgtMi44NmMxLjQxLTEuOTEsMi4xMi00LjYxLDIuMTItOC4xMnYtMTQuNjVaIi8+CiAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTI1OS4yOSw4MS41N1YyNS4yOGgxNC44N3Y1Ni4yOWgtMTQuODdaTTI2Ni44NSwwYzE1LjMzLDAsMTUuMjIsMjAuNzEsMCwyMC43MXMtMTUuMjItMjAuNzEsMC0yMC43MVoiLz4KICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMzE2LjI3LDgxLjU3Yy0uNDYtMS40NS0uNzYtMy4xMy0uOTItNS4wMy0xLjc1LDEuOTgtNC4wOCwzLjU3LTYuOTgsNC43NS0yLjksMS4xOC02LjI1LDEuNzctMTAuMDcsMS43Ny02LjQ4LDAtMTEuMjMtMS40My0xNC4yNC00LjI5LTMuMDEtMi44Ni00LjUyLTYuNTgtNC41Mi0xMS4xNiwwLTQuMDQuNjUtNy4yNywxLjk1LTkuNjcsMS4zLTIuNCwzLjA5LTQuMjksNS4zOC01LjY2LDIuMjktMS4zNyw1LjAxLTIuMzgsOC4xOC0zLjAzLDMuMTYtLjY1LDYuNjItMS4yNCwxMC4zNi0xLjc3LDMuNzQtLjUzLDYuMjUtMS4yNCw3LjU1LTIuMTIsMS4zLS44OCwxLjk1LTIuMzEsMS45NS00LjI5LDAtMS44My0uODYtMy4yNi0yLjU3LTQuMjktMS43Mi0xLjAzLTQuMDItMS41NC02LjkyLTEuNTQtMy40MywwLTUuODkuNzYtNy4zOCwyLjI5LTEuNDksMS41My0yLjQyLDMuNTUtMi44LDYuMDZoLTEzLjg0Yy4wOC0yLjkuNTUtNS41NywxLjQzLTguMDEuODgtMi40NCwyLjI5LTQuNTQsNC4yMy02LjI5LDEuOTUtMS43NSw0LjQ4LTMuMTEsNy42MS00LjA2LDMuMTMtLjk1LDYuOTQtMS40MywxMS40NC0xLjQzczguMTguNSwxMS4yNywxLjQ5YzMuMDkuOTksNS41NywyLjQyLDcuNDQsNC4yOSwxLjg3LDEuODcsMy4yMiw0LjIsNC4wNiw2Ljk4Ljg0LDIuNzksMS4yNiw1LjkzLDEuMjYsOS40NHYzNS41OGgtMTMuODRaTTMxNS4yNCw1NGMtLjc2Ljc2LTEuODcsMS4zNy0zLjMyLDEuODMtMS40NS40Ni0zLjU1Ljk1LTYuMjksMS40OS00LjI3Ljg0LTcuMjEsMS45MS04LjgxLDMuMi0xLjYsMS4zLTIuNCwzLjE3LTIuNCw1LjYxLDAsNC4yLDIuNCw2LjI5LDcuMjEsNi4yOSwxLjkxLDAsMy42OC0uMzIsNS4zMi0uOTcsMS42NC0uNjUsMy4wNS0xLjUyLDQuMjMtMi42MywxLjE4LTEuMTEsMi4xMy0yLjQsMi44Ni0zLjg5LjcyLTEuNDksMS4wOS0zLjA3LDEuMDktNC43NWwuMTEtNi4xOFoiLz4KICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMzczLjA1LDgxLjU3di0zNC4xYzAtNC4zNS0uNzMtNy4yOC0yLjE3LTguODEtMS40NS0xLjUyLTMuOTMtMi4yOS03LjQ0LTIuMjktNy43LDAtMTEuNTYsNC4zMS0xMS41NiwxMi45M3YzMi4yN2gtMTQuODdWMjUuMjhoMTQuMTl2OC4yNGMxLjc1LTMuMiw0LjA4LTUuNjIsNi45OC03LjI3LDIuOS0xLjY0LDYuNjQtMi40NiwxMS4yMS0yLjQ2LDIuNjcsMCw1LjE1LjQsNy40NCwxLjJzNC4yNSwyLDUuODksMy42YzEuNjQsMS42LDIuOTQsMy41NywzLjg5LDUuODkuOTUsMi4zMywxLjQzLDUuMDIsMS40Myw4LjA3djM5LjAyaC0xNC45OVoiLz4KICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNDQ0Ljk1LDYxLjIxYy0uMzgsMy4yOC0xLjMyLDYuMjUtMi44LDguOTItMS40OSwyLjY3LTMuMzgsNC45Ni01LjY2LDYuODctMi4yOSwxLjkxLTQuOSwzLjM5LTcuODQsNC40Ni0yLjk0LDEuMDctNi4xMiwxLjYtOS41NSwxLjYtMy44MSwwLTcuMy0uNjMtMTAuNDctMS44OS0zLjE3LTEuMjYtNS44OS0zLjE2LTguMTgtNS43Mi0yLjI5LTIuNTUtNC4wNi01LjcyLTUuMzItOS41LTEuMjYtMy43OC0xLjg5LTguMTgtMS44OS0xMy4yMnMuNjMtOS4zOCwxLjg5LTEzLjA0YzEuMjYtMy42NiwzLjAzLTYuNjUsNS4zMi04Ljk4LDIuMjktMi4zMyw1LjA1LTQuMDYsOC4zLTUuMjEsMy4yNC0xLjE0LDYuODQtMS43MiwxMC44MS0xLjcyLDMuNjYsMCw3LC41LDEwLjAxLDEuNDksMy4wMS45OSw1LjY0LDIuNDQsNy45LDQuMzUsMi4yNSwxLjkxLDQuMDIsNC4yLDUuMzIsNi44NywxLjMsMi42NywyLjA2LDUuNjUsMi4yOSw4LjkyaC0xNC45OWMtLjM4LTIuOS0xLjU0LTUuMTctMy40OS02LjgxLTEuOTUtMS42NC00LjMzLTIuNDYtNy4xNS0yLjQ2LTEuNiwwLTMuMDkuMjctNC40Ni44LTEuMzcuNTQtMi41NywxLjQzLTMuNiwyLjY5LTEuMDMsMS4yNi0xLjg1LDIuOTQtMi40Niw1LjAzLS42MSwyLjEtLjkxLDQuNjctLjkxLDcuNzIsMCw2LjE4LDEuMSwxMC43NSwzLjMyLDEzLjczLDIuMjEsMi45Nyw0Ljc3LDQuNDYsNy42Nyw0LjQ2czUuMzgtLjgsNy40NC0yLjRjMi4wNi0xLjYsMy4yNC0zLjkzLDMuNTUtNi45OGgxNC45OVoiLz4KICAgICAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNDg0Ljg4LDc0LjE0Yy0xLjA3LDIuNTItMyw0LjQ4LTUuNzgsNS44OS0yLjc5LDEuNDEtNS45MywyLjEyLTkuNDQsMi4xMi0yLjk3LDAtNS43Mi0uNDgtOC4yNC0xLjQzLTIuNTItLjk1LTQuNjktMi4zMy02LjUyLTQuMTItMS44My0xLjc5LTMuMjYtMy45My00LjI5LTYuNDEtMS4wMy0yLjQ4LTEuNTQtNS4yOC0xLjU0LTguNDFWMjUuMjhoMTQuODd2MzQuMzJjMCw3LjAyLDMuMTYsMTAuNTMsOS41LDEwLjUzLDMuNDMsMCw2LjItLjk5LDguMjktMi45NywyLjEtMS45OCwzLjE1LTQuNSwzLjE1LTcuNTVWMjUuMjhoMTQuODd2NTcuNzhjMCwzLjk2LS42Nyw3LjUxLTIsMTAuNjQtMS4zNCwzLjEzLTMuMTcsNS43Ni01LjQ5LDcuOS0yLjMzLDIuMTMtNS4wNywzLjc4LTguMjQsNC45Mi0zLjE3LDEuMTQtNi41NCwxLjcyLTEwLjEzLDEuNzItOC4zMSwwLTE0LjUzLTIuMS0xOC42NS02LjI5LTQuMTItNC4yLTYuMTgtOS45NS02LjE4LTE3LjI4aDEzLjg0YzAsMy4zNi45Nyw1Ljk5LDIuOTIsNy45LDEuOTUsMS45MSw0Ljg2LDIuODYsOC43NSwyLjg2LDEuMzcsMCwyLjY3LS4yOSwzLjg5LS44NiwxLjIyLS41NywyLjMxLTEuMzcsMy4yNi0yLjQuOTUtMS4wMywxLjcyLTIuMzEsMi4yOS0zLjgzLjU3LTEuNTMuODYtMy4yLjg2LTUuMDN2LTkuMTVaIi8+CiAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTUxOC4zOCw2MS43OGMxNS4zMywwLDE1LjIyLDIwLjcxLDAsMjAuNzFzLTE1LjIyLTIwLjcxLDAtMjAuNzFaIi8+CiAgICA8L2c+CiAgPC9nPgo8L3N2Zz4KCg==" alt="creatiancy." width="155" height="32" style="display:block;width:155px;height:auto;max-height:34px;border:0;" />
-                    </a>
-                  </td>
-                </tr>
-              </table>
+        <!-- Section: Contact Information -->
+        <div class="form-section">
+          <div class="section-headline">Contact Channels</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="inp-phone-display">Phone Number (Display)</label>
+              <input type="text" id="inp-phone-display" value="+880 1325 078 941">
+            </div>
+            <div class="form-group">
+              <label for="inp-phone-url">Tel URL</label>
+              <input type="text" id="inp-phone-url" value="tel:+8801325078941">
+            </div>
+          </div>
 
-              <!-- 2. Statement / Main Value Prop -->
-              <div style="font-size:20px;line-height:26px;font-weight:700;letter-spacing:-0.4px;color:#0a0a0c;margin:0 0 6px 0;">
-                Engineering brands that refuse to be ignored.
-              </div>
-              <div style="font-size:13px;line-height:20px;font-weight:500;color:#6e6e73;margin:0 0 18px 0;">
-                Strategy &nbsp;&middot;&nbsp; Digital &nbsp;&middot;&nbsp; Creative &nbsp;&middot;&nbsp; Growth
-              </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="inp-web-display">Website (Display)</label>
+              <input type="text" id="inp-web-display" value="creatiancy.com">
+            </div>
+            <div class="form-group">
+              <label for="inp-web-url">Website URL</label>
+              <input type="url" id="inp-web-url" value="https://creatiancy.com">
+            </div>
+          </div>
 
-              <!-- 3. Red Accent Underline + Split Divider -->
-              <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;margin:0 0 22px 0;">
-                <tr>
-                  <td width="42" height="2" bgcolor="#9b1c22" style="width:42px;height:2px;background-color:#9b1c22;line-height:2px;font-size:2px;border-radius:1px;">&nbsp;</td>
-                  <td height="1" bgcolor="#e9eef4" style="height:1px;background-color:#e9eef4;line-height:1px;font-size:1px;">&nbsp;</td>
-                </tr>
-              </table>
+          <div class="form-group">
+            <label for="inp-email">Official Email</label>
+            <input type="email" id="inp-email" value="hello@creatiancy.com">
+          </div>
+        </div>
 
-              <!-- 4. Contact Details (Web / Call / Mail) -->
-              <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;margin:0 0 24px 0;">
-                <tr>
-                  <!-- Web -->
-                  <td valign="top" style="padding:0 18px 0 0;white-space:nowrap;">
-                    <div style="font-size:10px;line-height:14px;font-weight:700;letter-spacing:0.8px;color:#86868b;text-transform:uppercase;margin-bottom:3px;">WEB</div>
-                    <a href="https://creatiancy.com" target="_blank" style="font-size:13px;line-height:18px;font-weight:500;color:#0a0a0c;text-decoration:none;">creatiancy.com</a>
-                  </td>
-                  <!-- Call -->
-                  <td valign="top" style="padding:0 18px 0 0;white-space:nowrap;">
-                    <div style="font-size:10px;line-height:14px;font-weight:700;letter-spacing:0.8px;color:#86868b;text-transform:uppercase;margin-bottom:3px;">CALL</div>
-                    <a href="tel:+8801325078941" style="font-size:13px;line-height:18px;font-weight:500;color:#0a0a0c;text-decoration:none;">+880 1325-078941</a>
-                  </td>
-                  <!-- Mail -->
-                  <td valign="top" style="padding:0;white-space:nowrap;">
-                    <div style="font-size:10px;line-height:14px;font-weight:700;letter-spacing:0.8px;color:#86868b;text-transform:uppercase;margin-bottom:3px;">MAIL</div>
-                    <a href="mailto:hello@creatiancy.com" style="font-size:13px;line-height:18px;font-weight:500;color:#0a0a0c;text-decoration:none;">hello@creatiancy.com</a>
-                  </td>
-                </tr>
-              </table>
+        <!-- Section: Call To Action Buttons -->
+        <div class="form-section">
+          <div class="section-headline">Action Buttons (CTAs)</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="inp-btn1-text">Primary Button Text</label>
+              <input type="text" id="inp-btn1-text" value="Let's talk">
+            </div>
+            <div class="form-group">
+              <label for="inp-btn1-url">Primary Button Link</label>
+              <input type="url" id="inp-btn1-url" value="https://creatiancy.com/contact">
+            </div>
+          </div>
 
-              <!-- 5. Interactive Pill Action CTAs -->
-              <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
-                <tr>
-                  <!-- CTA 1: Let's talk -->
-                  <td style="padding:0 12px 0 0;">
-                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="background-color:#050507;border-radius:100px;border-collapse:separate;">
-                      <tr>
-                        <td style="padding:0 10px 0 18px;height:42px;vertical-align:middle;">
-                          <a href="https://creatiancy.com/contact" target="_blank" style="color:#ffffff;text-decoration:none;font-size:13px;font-weight:700;white-space:nowrap;line-height:42px;display:inline-block;">Let&rsquo;s talk</a>
-                        </td>
-                        <td style="padding:0 7px 0 0;vertical-align:middle;">
-                          <a href="https://creatiancy.com/contact" target="_blank" style="text-decoration:none;display:block;">
-                            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyOCIgaGVpZ2h0PSIyOCIgdmlld0JveD0iMCAwIDI4IDI4IiBmaWxsPSJub25lIj4KICA8Y2lyY2xlIGN4PSIxNCIgY3k9IjE0IiByPSIxNCIgZmlsbD0iIzliMWMyMiIvPgogIDxwYXRoIGQ9Ik04IDE0SDE5LjVNMTkuNSAxNEwxNSA5LjVNMTkuNSAxNEwxNSAxOC41IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4=" alt="&rarr;" width="28" height="28" style="display:block;width:28px;height:28px;border:0;border-radius:50%;" />
-                          </a>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="inp-btn2-text">Secondary Button Text</label>
+              <input type="text" id="inp-btn2-text" value="View our work">
+            </div>
+            <div class="form-group">
+              <label for="inp-btn2-url">Secondary Button Link</label>
+              <input type="url" id="inp-btn2-url" value="https://creatiancy.com/work">
+            </div>
+          </div>
+        </div>
 
-                  <!-- CTA 2: View our work -->
-                  <td style="padding:0;">
-                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;border:1.5px solid #050507;border-radius:100px;border-collapse:separate;">
-                      <tr>
-                        <td style="padding:0 10px 0 18px;height:40px;vertical-align:middle;">
-                          <a href="https://creatiancy.com/work" target="_blank" style="color:#050507;text-decoration:none;font-size:13px;font-weight:700;white-space:nowrap;line-height:40px;display:inline-block;">View our work</a>
-                        </td>
-                        <td style="padding:0 7px 0 0;vertical-align:middle;">
-                          <a href="https://creatiancy.com/work" target="_blank" style="text-decoration:none;display:block;">
-                            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyOCIgaGVpZ2h0PSIyOCIgdmlld0JveD0iMCAwIDI4IDI4IiBmaWxsPSJub25lIj4KICA8Y2lyY2xlIGN4PSIxNCIgY3k9IjE0IiByPSIxNCIgZmlsbD0iIzA1MDUwNyIvPgogIDxwYXRoIGQ9Ik04IDE0SDE5LjVNMTkuNSAxNEwxNSA5LjVNMTkuNSAxNEwxNSAxOC41IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4=" alt="&rarr;" width="28" height="28" style="display:block;width:28px;height:28px;border:0;border-radius:50%;" />
-                          </a>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
+        <!-- Section: Footer & Socials -->
+        <div class="form-section">
+          <div class="section-headline">Footer Tagline &amp; Social Profiles</div>
+          <div class="form-group">
+            <label for="inp-slogan">Footer Brand Slogan</label>
+            <input type="text" id="inp-slogan" value="THINK TOGETHER">
+          </div>
 
-            </td>
-          </tr>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="inp-behance">Behance Link</label>
+              <input type="url" id="inp-behance" value="https://behance.net/creatiancy">
+            </div>
+            <div class="form-group">
+              <label for="inp-linkedin">LinkedIn Link</label>
+              <input type="url" id="inp-linkedin" value="https://linkedin.com/company/creatiancy">
+            </div>
+          </div>
 
-          <!-- 6. Bottom Banner Strip: THINK TOGETHER & Social Channels -->
-          <tr>
-            <td bgcolor="#f9f9fb" style="background-color:#f9f9fb;border-top:1px solid #e3eaf1;padding:14px 32px;">
-              <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;">
-                <tr>
-                  <!-- Accent Line + Slogan -->
-                  <td valign="middle" style="white-space:nowrap;">
-                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
-                      <tr>
-                        <td width="18" height="2" bgcolor="#9b1c22" style="width:18px;height:2px;background-color:#9b1c22;line-height:2px;font-size:2px;border-radius:1px;">&nbsp;</td>
-                        <td style="padding-left:10px;font-size:11px;line-height:14px;font-weight:800;letter-spacing:1.4px;color:#2c2c2e;text-transform:uppercase;">
-                          THINK TOGETHER
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="inp-instagram">Instagram Link</label>
+              <input type="url" id="inp-instagram" value="https://instagram.com/creatiancy">
+            </div>
+            <div class="form-group">
+              <label for="inp-facebook">Facebook Link</label>
+              <input type="url" id="inp-facebook" value="https://facebook.com/creatiancy">
+            </div>
+          </div>
 
-                  <!-- Social Links -->
-                  <td align="right" valign="middle" style="text-align:right;font-size:12px;line-height:16px;">
-                    <a href="https://behance.net/creatiancy" target="_blank" style="color:#6e6e73;text-decoration:none;font-weight:500;">Behance</a>
-                    <span style="padding:0 6px;color:#d2d2d7;">&nbsp;</span>
-                    <a href="https://linkedin.com/company/creatiancy" target="_blank" style="color:#6e6e73;text-decoration:none;font-weight:500;">LinkedIn</a>
-                    <span style="padding:0 6px;color:#d2d2d7;">&nbsp;</span>
-                    <a href="https://instagram.com/creatiancy" target="_blank" style="color:#6e6e73;text-decoration:none;font-weight:500;">Instagram</a>
-                    <span style="padding:0 6px;color:#d2d2d7;">&nbsp;</span>
-                    <a href="https://facebook.com/creatiancy" target="_blank" style="color:#6e6e73;text-decoration:none;font-weight:500;">Facebook</a>
-                    <span style="padding:0 6px;color:#d2d2d7;">&nbsp;</span>
-                    <a href="https://x.com/creatiancy" target="_blank" style="color:#6e6e73;text-decoration:none;font-weight:500;">X</a>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
-        <!-- ==================== END CREATIANCY EMAIL SIGNATURE ==================== -->
+          <div class="form-group">
+            <label for="inp-x">X (Twitter) Link</label>
+            <input type="url" id="inp-x" value="https://x.com/creatiancy">
+          </div>
+        </div>
 
       </div>
     </div>
 
-    <div class="instructions-card">
-      <strong>Quick Tip:</strong> Click <strong>&ldquo;Copy Signature&rdquo;</strong> to paste directly into Gmail (Settings &rarr; See all settings &rarr; General &rarr; Signature) or Apple Mail / Outlook with preserved styling, font hierarchy, and high-DPI icons.
-    </div>
-  </main>
+  </div>
 
   <div class="toast" id="toast">
-    <span>&#10003;</span>
-    <span id="toast-text">Signature copied to clipboard!</span>
+    <div class="toast-dot"></div>
+    <span id="toast-msg">Signature copied to clipboard!</span>
   </div>
 
   <script>
-    var copySigBtn = document.getElementById('copy-signature-btn');
-    var copyHtmlBtn = document.getElementById('copy-html-btn');
-    var btnDesktop = document.getElementById('btn-desktop-view');
-    var btnMobile = document.getElementById('btn-mobile-view');
-    var btnToggleBg = document.getElementById('btn-toggle-bg');
-    var stage = document.getElementById('signature-stage');
-    var previewOuter = document.getElementById('preview-outer');
+    // Elements
+    var table = document.getElementById('sig-table');
+    var wrapper = document.getElementById('preview-wrapper');
+    var canvasContainer = document.getElementById('canvas-container');
     var toast = document.getElementById('toast');
-    var toastText = document.getElementById('toast-text');
+    var toastMsg = document.getElementById('toast-msg');
 
-    btnDesktop.addEventListener('click', function() {
-      btnDesktop.classList.add('active');
-      btnMobile.classList.remove('active');
-      stage.style.maxWidth = '560px';
+    // Live binding inputs
+    var inputs = {
+      headline: document.getElementById('inp-headline'),
+      subline: document.getElementById('inp-subline'),
+      phoneDisplay: document.getElementById('inp-phone-display'),
+      phoneUrl: document.getElementById('inp-phone-url'),
+      webDisplay: document.getElementById('inp-web-display'),
+      webUrl: document.getElementById('inp-web-url'),
+      email: document.getElementById('inp-email'),
+      btn1Text: document.getElementById('inp-btn1-text'),
+      btn1Url: document.getElementById('inp-btn1-url'),
+      btn2Text: document.getElementById('inp-btn2-text'),
+      btn2Url: document.getElementById('inp-btn2-url'),
+      slogan: document.getElementById('inp-slogan'),
+      behance: document.getElementById('inp-behance'),
+      linkedin: document.getElementById('inp-linkedin'),
+      instagram: document.getElementById('inp-instagram'),
+      facebook: document.getElementById('inp-facebook'),
+      x: document.getElementById('inp-x')
+    };
+
+    // Target elements in signature
+    var targets = {
+      headline: document.getElementById('sig-headline'),
+      subline: document.getElementById('sig-subline'),
+      phone: document.getElementById('sig-phone'),
+      web: document.getElementById('sig-web'),
+      email: document.getElementById('sig-email'),
+      btn1Text: document.getElementById('sig-btn1-text'),
+      btn1Link: document.getElementById('sig-btn1-link'),
+      btn1IconLink: document.getElementById('sig-btn1-icon-link'),
+      btn2Text: document.getElementById('sig-btn2-text'),
+      btn2Link: document.getElementById('sig-btn2-link'),
+      btn2IconLink: document.getElementById('sig-btn2-icon-link'),
+      slogan: document.getElementById('sig-slogan'),
+      behance: document.getElementById('sig-behance'),
+      linkedin: document.getElementById('sig-linkedin'),
+      instagram: document.getElementById('sig-instagram'),
+      facebook: document.getElementById('sig-facebook'),
+      x: document.getElementById('sig-x')
+    };
+
+    function updateSignature() {
+      targets.headline.textContent = inputs.headline.value;
+      targets.subline.innerHTML = inputs.subline.value.replace(/ · /g, ' &nbsp;&middot;&nbsp; ');
+      
+      targets.phone.textContent = inputs.phoneDisplay.value;
+      targets.phone.href = inputs.phoneUrl.value;
+
+      targets.web.textContent = inputs.webDisplay.value;
+      targets.web.href = inputs.webUrl.value;
+
+      targets.email.textContent = inputs.email.value;
+      targets.email.href = 'mailto:' + inputs.email.value;
+
+      targets.btn1Text.textContent = inputs.btn1Text.value;
+      targets.btn1Link.href = inputs.btn1Url.value;
+      targets.btn1IconLink.href = inputs.btn1Url.value;
+
+      targets.btn2Text.textContent = inputs.btn2Text.value;
+      targets.btn2Link.href = inputs.btn2Url.value;
+      targets.btn2IconLink.href = inputs.btn2Url.value;
+
+      targets.slogan.textContent = inputs.slogan.value.toUpperCase();
+      targets.behance.href = inputs.behance.value;
+      targets.linkedin.href = inputs.linkedin.value;
+      targets.instagram.href = inputs.instagram.value;
+      targets.facebook.href = inputs.facebook.value;
+      targets.x.href = inputs.x.value;
+    }
+
+    // Attach listeners
+    Object.keys(inputs).forEach(function(key) {
+      inputs[key].addEventListener('input', updateSignature);
     });
 
-    btnMobile.addEventListener('click', function() {
-      btnMobile.classList.add('active');
-      btnDesktop.classList.remove('active');
-      stage.style.maxWidth = '380px';
+    // Desktop / Mobile tabs
+    var tabDesktop = document.getElementById('tab-desktop');
+    var tabMobile = document.getElementById('tab-mobile');
+
+    tabDesktop.addEventListener('click', function() {
+      tabDesktop.classList.add('active');
+      tabMobile.classList.remove('active');
+      wrapper.style.maxWidth = '560px';
     });
 
-    btnToggleBg.addEventListener('click', function() {
-      previewOuter.classList.toggle('dark-bg');
+    tabMobile.addEventListener('click', function() {
+      tabMobile.classList.add('active');
+      tabDesktop.classList.remove('active');
+      wrapper.style.maxWidth = '380px';
     });
 
-    copySigBtn.addEventListener('click', function() {
-      var table = stage.querySelector('table');
+    // Dark/Light Mode toggle
+    document.getElementById('btn-toggle-mode').addEventListener('click', function() {
+      canvasContainer.classList.toggle('dark-canvas');
+    });
+
+    // Copy formatted rich signature
+    document.getElementById('btn-copy-sig').addEventListener('click', function() {
       var range = document.createRange();
       range.selectNode(table);
       var sel = window.getSelection();
@@ -446,9 +778,9 @@
       sel.addRange(range);
 
       try {
-        var ok = document.execCommand('copy');
-        if (ok) {
-          showToast('Rich Signature copied! Ready to paste in Gmail / Outlook');
+        var success = document.execCommand('copy');
+        if (success) {
+          showToast('Rich signature copied! Paste into Gmail / Apple Mail.');
         }
       } catch (err) {
         navigator.clipboard.writeText(table.outerHTML).then(function() {
@@ -458,19 +790,42 @@
       sel.removeAllRanges();
     });
 
-    copyHtmlBtn.addEventListener('click', function() {
-      var table = stage.querySelector('table');
+    // Copy HTML raw
+    document.getElementById('btn-copy-html').addEventListener('click', function() {
       navigator.clipboard.writeText(table.outerHTML).then(function() {
         showToast('HTML code copied to clipboard!');
       });
     });
 
+    // Reset Defaults
+    document.getElementById('btn-reset-defaults').addEventListener('click', function() {
+      inputs.headline.value = 'Engineering brands that refuse to be ignored.';
+      inputs.subline.value = 'Strategy · Digital · Creative · Growth';
+      inputs.phoneDisplay.value = '+880 1325 078 941';
+      inputs.phoneUrl.value = 'tel:+8801325078941';
+      inputs.webDisplay.value = 'creatiancy.com';
+      inputs.webUrl.value = 'https://creatiancy.com';
+      inputs.email.value = 'hello@creatiancy.com';
+      inputs.btn1Text.value = "Let's talk";
+      inputs.btn1Url.value = 'https://creatiancy.com/contact';
+      inputs.btn2Text.value = 'View our work';
+      inputs.btn2Url.value = 'https://creatiancy.com/work';
+      inputs.slogan.value = 'THINK TOGETHER';
+      inputs.behance.value = 'https://behance.net/creatiancy';
+      inputs.linkedin.value = 'https://linkedin.com/company/creatiancy';
+      inputs.instagram.value = 'https://instagram.com/creatiancy';
+      inputs.facebook.value = 'https://facebook.com/creatiancy';
+      inputs.x.value = 'https://x.com/creatiancy';
+      updateSignature();
+      showToast('Reset to Creatiancy defaults.');
+    });
+
     function showToast(msg) {
-      toastText.textContent = msg;
+      toastMsg.textContent = msg;
       toast.classList.add('show');
       setTimeout(function() {
         toast.classList.remove('show');
-      }, 3000);
+      }, 2800);
     }
   </script>
 </body>
