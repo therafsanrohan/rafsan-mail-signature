@@ -6,7 +6,7 @@
   <title>Creatiancy &mdash; Signature Studio &amp; Live Generator</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --brand-red: #9b1c22;
@@ -15,7 +15,7 @@
       --ink: #0a0a0c;
       --muted: #6e6e73;
       --border: #e3eaf1;
-      --app-bg: #f5f6fa;
+      --app-bg: #f4f5f8;
       --panel-bg: #ffffff;
       --input-bg: #fbfbfd;
       --input-border: #dcdfe6;
@@ -35,9 +35,8 @@
       line-height: 1.5;
     }
 
-    /* Top Navigation Header */
     .studio-navbar {
-      background: rgba(255, 255, 255, 0.85);
+      background: rgba(255, 255, 255, 0.88);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid rgba(0, 0, 0, 0.06);
@@ -86,7 +85,6 @@
       gap: 10px;
     }
 
-    /* Main Grid Layout */
     .studio-layout {
       max-width: 1320px;
       margin: 0 auto;
@@ -103,7 +101,6 @@
       }
     }
 
-    /* Panels */
     .studio-panel {
       background: var(--panel-bg);
       border-radius: 20px;
@@ -138,7 +135,6 @@
       background: var(--brand-red);
     }
 
-    /* Preview Canvas Area */
     .preview-body {
       padding: 36px 24px;
       min-height: 480px;
@@ -160,7 +156,6 @@
       transition: max-width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* Toolbar buttons inside preview */
     .view-toggles {
       display: flex;
       background: #f0f2f5;
@@ -188,7 +183,6 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.06);
     }
 
-    /* Buttons */
     .btn {
       appearance: none;
       border: none;
@@ -240,7 +234,6 @@
       background: #f7f8fa;
     }
 
-    /* Editor Form Styles */
     .form-body {
       padding: 24px;
       display: flex;
@@ -266,7 +259,31 @@
       margin-bottom: 14px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
+    }
+
+    .style-pill-selector {
+      display: flex;
       gap: 6px;
+    }
+
+    .style-pill {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: #ffffff;
+      color: var(--text-sub);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 100px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .style-pill.active {
+      background: var(--brand-black);
+      color: #ffffff;
+      border-color: var(--brand-black);
     }
 
     .form-group {
@@ -322,12 +339,6 @@
       box-shadow: 0 0 0 3px rgba(155, 28, 34, 0.1);
     }
 
-    textarea {
-      resize: vertical;
-      min-height: 52px;
-    }
-
-    /* Toast Notification */
     .toast {
       position: fixed;
       bottom: 24px;
@@ -405,7 +416,7 @@
         <div class="preview-stage" id="preview-wrapper">
 
           <!-- ==================== SIGNATURE RENDER START ==================== -->
-          <table id="sig-table" role="presentation" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;width:100%;border-collapse:separate;border:1px solid #e3eaf1;border-radius:18px;overflow:hidden;background-color:#ffffff;font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#0a0a0c;-webkit-font-smoothing:antialiased;">
+          <table id="sig-table" role="presentation" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;width:100%;border-collapse:separate;border:1px solid #e3eaf1;border-radius:20px;overflow:hidden;background-color:#ffffff;font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#0a0a0c;-webkit-font-smoothing:antialiased;">
             <tr>
               <td style="padding:32px 32px 24px 32px;">
 
@@ -497,37 +508,41 @@
               </td>
             </tr>
 
-            <!-- 6. Bottom Banner Strip: THINK TOGETHER & Social Channels -->
+            <!-- 6. HIGH-END CREATIVE FOOTER CONTAINER -->
             <tr>
-              <td bgcolor="#f9f9fb" style="background-color:#f9f9fb;border-top:1px solid #e3eaf1;padding:14px 32px;">
+              <td id="footer-cell" bgcolor="#f8f9fc" style="background-color:#f8f9fc;border-top:1px solid #e3eaf1;padding:16px 32px;">
+                
                 <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;">
                   <tr>
-                    <!-- Accent Line + Slogan -->
-                    <td valign="middle" style="white-space:nowrap;">
+                    <!-- LEFT: THINK TOGETHER Branding -->
+                    <td valign="middle" style="padding-right:16px;white-space:nowrap;">
                       <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
                         <tr>
                           <td width="18" height="2" bgcolor="#9b1c22" style="width:18px;height:2px;background-color:#9b1c22;line-height:2px;font-size:2px;border-radius:1px;">&nbsp;</td>
-                          <td id="sig-slogan" style="padding-left:10px;font-size:11px;line-height:14px;font-weight:800;letter-spacing:1.4px;color:#2c2c2e;text-transform:uppercase;">
+                          <td id="sig-slogan" style="padding-left:10px;font-family:'Space Grotesk',-apple-system,sans-serif;font-size:11px;line-height:14px;font-weight:700;letter-spacing:1.6px;color:#1d1d1f;text-transform:uppercase;">
                             THINK TOGETHER
                           </td>
                         </tr>
                       </table>
                     </td>
 
-                    <!-- Social Links -->
-                    <td align="right" valign="middle" style="text-align:right;font-size:12px;line-height:16px;">
-                      <a id="sig-behance" href="https://behance.net/creatiancy" target="_blank" style="color:#6e6e73;text-decoration:none;font-weight:500;">Behance</a>
-                      <span style="padding:0 6px;color:#d2d2d7;">&nbsp;</span>
-                      <a id="sig-linkedin" href="https://linkedin.com/company/creatiancy" target="_blank" style="color:#6e6e73;text-decoration:none;font-weight:500;">LinkedIn</a>
-                      <span style="padding:0 6px;color:#d2d2d7;">&nbsp;</span>
-                      <a id="sig-instagram" href="https://instagram.com/creatiancy" target="_blank" style="color:#6e6e73;text-decoration:none;font-weight:500;">Instagram</a>
-                      <span style="padding:0 6px;color:#d2d2d7;">&nbsp;</span>
-                      <a id="sig-facebook" href="https://facebook.com/creatiancy" target="_blank" style="color:#6e6e73;text-decoration:none;font-weight:500;">Facebook</a>
-                      <span style="padding:0 6px;color:#d2d2d7;">&nbsp;</span>
-                      <a id="sig-x" href="https://x.com/creatiancy" target="_blank" style="color:#6e6e73;text-decoration:none;font-weight:500;">X</a>
+                    <!-- RIGHT: Creative Social Link Cluster -->
+                    <td id="social-cluster-cell" align="right" valign="middle" style="text-align:right;">
+                      <div id="social-links-wrapper" style="display:inline-block;white-space:nowrap;font-size:12px;line-height:16px;">
+                        <a id="sig-behance" href="https://behance.net/creatiancy" target="_blank" style="color:#48484a;text-decoration:none;font-weight:600;padding:2px 4px;letter-spacing:-0.1px;">Behance</a>
+                        <span style="padding:0 8px;color:#c7c7cc;font-size:10px;">&bull;</span>
+                        <a id="sig-linkedin" href="https://linkedin.com/company/creatiancy" target="_blank" style="color:#48484a;text-decoration:none;font-weight:600;padding:2px 4px;letter-spacing:-0.1px;">LinkedIn</a>
+                        <span style="padding:0 8px;color:#c7c7cc;font-size:10px;">&bull;</span>
+                        <a id="sig-instagram" href="https://instagram.com/creatiancy" target="_blank" style="color:#48484a;text-decoration:none;font-weight:600;padding:2px 4px;letter-spacing:-0.1px;">Instagram</a>
+                        <span style="padding:0 8px;color:#c7c7cc;font-size:10px;">&bull;</span>
+                        <a id="sig-facebook" href="https://facebook.com/creatiancy" target="_blank" style="color:#48484a;text-decoration:none;font-weight:600;padding:2px 4px;letter-spacing:-0.1px;">Facebook</a>
+                        <span style="padding:0 8px;color:#c7c7cc;font-size:10px;">&bull;</span>
+                        <a id="sig-x" href="https://x.com/creatiancy" target="_blank" style="color:#48484a;text-decoration:none;font-weight:600;padding:2px 4px;letter-spacing:-0.1px;">X</a>
+                      </div>
                     </td>
                   </tr>
                 </table>
+
               </td>
             </tr>
           </table>
@@ -548,6 +563,19 @@
 
       <div class="form-body">
         
+        <!-- Section: Footer Aesthetic Style Selector -->
+        <div class="form-section" style="border:1.5px solid rgba(155, 28, 34, 0.25);background:#fff9f9;">
+          <div class="section-headline">
+            <span>Footer Design Vibe</span>
+            <div class="style-pill-selector">
+              <button class="style-pill active" id="footer-vibe-clean">Clean Modern</button>
+              <button class="style-pill" id="footer-vibe-badge">Pill Badges</button>
+              <button class="style-pill" id="footer-vibe-dark">Dark Contrast</button>
+            </div>
+          </div>
+          <p style="font-size:12px;color:#6e6e73;">Footer টি সুন্দর ও প্রিমিয়াম লুক দিতে উপরের স্টাইলগুলো ক্লিক করে লাইভ চেঞ্জ দেখতে পারবেন।</p>
+        </div>
+
         <!-- Section: Tagline & Services -->
         <div class="form-section">
           <div class="section-headline">Hero Headline &amp; Tagline</div>
@@ -665,14 +693,14 @@
   </div>
 
   <script>
-    // Elements
     var table = document.getElementById('sig-table');
     var wrapper = document.getElementById('preview-wrapper');
     var canvasContainer = document.getElementById('canvas-container');
+    var footerCell = document.getElementById('footer-cell');
+    var socialLinksWrapper = document.getElementById('social-links-wrapper');
     var toast = document.getElementById('toast');
     var toastMsg = document.getElementById('toast-msg');
 
-    // Live binding inputs
     var inputs = {
       headline: document.getElementById('inp-headline'),
       subline: document.getElementById('inp-subline'),
@@ -693,7 +721,6 @@
       x: document.getElementById('inp-x')
     };
 
-    // Target elements in signature
     var targets = {
       headline: document.getElementById('sig-headline'),
       subline: document.getElementById('sig-subline'),
@@ -743,12 +770,64 @@
       targets.x.href = inputs.x.value;
     }
 
-    // Attach listeners
     Object.keys(inputs).forEach(function(key) {
       inputs[key].addEventListener('input', updateSignature);
     });
 
-    // Desktop / Mobile tabs
+    // Footer Vibe Switcher
+    var vibeClean = document.getElementById('footer-vibe-clean');
+    var vibeBadge = document.getElementById('footer-vibe-badge');
+    var vibeDark = document.getElementById('footer-vibe-dark');
+
+    function setPillActive(activeBtn) {
+      [vibeClean, vibeBadge, vibeDark].forEach(function(b) { b.classList.remove('active'); });
+      activeBtn.classList.add('active');
+    }
+
+    vibeClean.addEventListener('click', function() {
+      setPillActive(vibeClean);
+      footerCell.style.backgroundColor = '#f8f9fc';
+      footerCell.setAttribute('bgcolor', '#f8f9fc');
+      targets.slogan.style.color = '#1d1d1f';
+      var links = [targets.behance, targets.linkedin, targets.instagram, targets.facebook, targets.x];
+      links.forEach(function(l) {
+        l.style.color = '#48484a';
+        l.style.background = 'transparent';
+        l.style.border = 'none';
+        l.style.padding = '2px 4px';
+      });
+    });
+
+    vibeBadge.addEventListener('click', function() {
+      setPillActive(vibeBadge);
+      footerCell.style.backgroundColor = '#ffffff';
+      footerCell.setAttribute('bgcolor', '#ffffff');
+      targets.slogan.style.color = '#0a0a0c';
+      var links = [targets.behance, targets.linkedin, targets.instagram, targets.facebook, targets.x];
+      links.forEach(function(l) {
+        l.style.color = '#1d1d1f';
+        l.style.background = '#f2f3f7';
+        l.style.border = '1px solid #e5e7eb';
+        l.style.padding = '3px 8px';
+        l.style.borderRadius = '100px';
+      });
+    });
+
+    vibeDark.addEventListener('click', function() {
+      setPillActive(vibeDark);
+      footerCell.style.backgroundColor = '#050507';
+      footerCell.setAttribute('bgcolor', '#050507');
+      targets.slogan.style.color = '#ffffff';
+      var links = [targets.behance, targets.linkedin, targets.instagram, targets.facebook, targets.x];
+      links.forEach(function(l) {
+        l.style.color = '#e5e5ea';
+        l.style.background = '#16171b';
+        l.style.border = '1px solid #2c2c2e';
+        l.style.padding = '3px 8px';
+        l.style.borderRadius = '100px';
+      });
+    });
+
     var tabDesktop = document.getElementById('tab-desktop');
     var tabMobile = document.getElementById('tab-mobile');
 
@@ -764,12 +843,10 @@
       wrapper.style.maxWidth = '380px';
     });
 
-    // Dark/Light Mode toggle
     document.getElementById('btn-toggle-mode').addEventListener('click', function() {
       canvasContainer.classList.toggle('dark-canvas');
     });
 
-    // Copy formatted rich signature
     document.getElementById('btn-copy-sig').addEventListener('click', function() {
       var range = document.createRange();
       range.selectNode(table);
@@ -790,14 +867,12 @@
       sel.removeAllRanges();
     });
 
-    // Copy HTML raw
     document.getElementById('btn-copy-html').addEventListener('click', function() {
       navigator.clipboard.writeText(table.outerHTML).then(function() {
         showToast('HTML code copied to clipboard!');
       });
     });
 
-    // Reset Defaults
     document.getElementById('btn-reset-defaults').addEventListener('click', function() {
       inputs.headline.value = 'Engineering brands that refuse to be ignored.';
       inputs.subline.value = 'Strategy · Digital · Creative · Growth';
@@ -816,6 +891,7 @@
       inputs.instagram.value = 'https://instagram.com/creatiancy';
       inputs.facebook.value = 'https://facebook.com/creatiancy';
       inputs.x.value = 'https://x.com/creatiancy';
+      vibeClean.click();
       updateSignature();
       showToast('Reset to Creatiancy defaults.');
     });
