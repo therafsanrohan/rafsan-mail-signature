@@ -66,7 +66,7 @@
 
     @media (min-width: 900px) {
       .grid {
-        grid-template-columns: 540px 1fr;
+        grid-template-columns: 560px 1fr;
         align-items: start;
       }
     }
@@ -281,6 +281,20 @@
       line-height: 1.6;
       color: #515154;
     }
+
+    .fluid-badge {
+      display: inline-block;
+      background: #e8f5e9;
+      color: #2e7d32;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 99px;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
   </style>
 </head>
 
@@ -295,7 +309,7 @@
       <!-- Left Column: Live Preview & Copy -->
       <div class="panel">
         <div class="panel-header">
-          <h2 class="panel-title">Signature Preview</h2>
+          <h2 class="panel-title">Signature Preview <span class="fluid-badge">Auto-Responsive</span></h2>
           <div class="mode-pills" role="tablist">
             <button class="mode-pill active" id="btn-mode-desktop" type="button">Desktop</button>
             <button class="mode-pill" id="btn-mode-mobile" type="button">Mobile</button>
@@ -318,16 +332,16 @@
         </div>
 
         <p class="preview-hint">
-          <strong>টিপস:</strong> আপনি যে ভিউ সিলেক্ট করবেন (Desktop বা Mobile), "Copy Signature" বাটনে চাপলে সেই লেআউটের সিগনেচারই আপনার ক্লিপবোর্ডে কপি হয়ে যাবে।
+          <strong>✨ Fluid Hybrid:</strong> একটাই সিগনেচার কপি করুন — ডেক্সটপে পাশাপাশি দেখাবে, মোবাইলে স্বয়ংক্রিয়ভাবে নিচে সেজে যাবে। Desktop/Mobile টগল শুধু প্রিভিউ দেখতে।
         </p>
 
         <div class="instructions-card">
-          <h3>জিমেইল / আউটলুকে পেস্ট করার নিয়ম:</h3>
+          <h3>জিমেইল / আউটলুকে পেস্ট করার নিয়ম:</h3>
           <ol>
             <li>উপরে <strong>Copy Signature</strong> বাটনে ক্লিক করুন।</li>
-            <li><strong>Gmail</strong>: Settings &rarr; See all settings &rarr; General &rarr; Signature বক্সে গিয়ে Paste করুন (`Cmd+V` বা `Ctrl+V`) &rarr; Save Changes।</li>
+            <li><strong>Gmail</strong>: Settings &rarr; See all settings &rarr; General &rarr; Signature বক্সে গিয়ে Paste করুন (<code>Cmd+V</code> বা <code>Ctrl+V</code>) &rarr; Save Changes।</li>
             <li><strong>Apple Mail</strong>: Settings &rarr; Signatures &rarr; নতুন যোগ করে Paste করুন।</li>
-            <li><strong>Outlook</strong>: Settings &rarr; Mail &rarr; Signature এ গিয়ে Paste করুন।</li>
+            <li><strong>Outlook</strong>: Settings &rarr; Mail &rarr; Signature এ গিয়ে Paste করুন।</li>
           </ol>
         </div>
       </div>
@@ -403,7 +417,7 @@
           <div class="form-row">
             <div class="form-group">
               <label for="inp-btn1-text">Button 1 Text</label>
-              <input type="text" id="inp-btn1-text" value="Let’s talk">
+              <input type="text" id="inp-btn1-text" value="Let's talk">
             </div>
             <div class="form-group">
               <label for="inp-btn1-url">Button 1 Link</label>
@@ -461,7 +475,7 @@
         phoneLabel: "+880 1325 078 942",
         phoneUrl: "https://wa.me/8801325078942",
         email: "knock@rafsanrohan.com",
-        btn1Text: "Let’s talk",
+        btn1Text: "Let\u2019s talk",
         btn1Url: "https://wa.me/8801325078942",
         btn2Text: "View my work",
         btn2Url: "https://www.rafsanrohan.com/",
@@ -528,151 +542,123 @@
         return div.innerHTML;
       }
 
-      function renderSignatureHTML(v, mode) {
-        var isMobile = mode === "mobile";
-        var maxW = isMobile ? "380px" : "540px";
-        var nameSize = isMobile ? "22px" : "26px";
-        var nameLh = isMobile ? "26px" : "30px";
-
-        // Non-breaking phone label
+      /**
+       * FLUID HYBRID SIGNATURE
+       * ========================
+       * One single HTML — works on both desktop (side-by-side) and mobile (stacked).
+       *
+       * The trick:
+       * - Contact items use `display:inline-block` so they sit in a row on wide
+       *   screens and naturally wrap/stack on narrow screens.
+       * - Buttons use a "ghost table" technique: an outer `div` with
+       *   `display:inline-block; min-width:49%; max-width:100%` — on a wide
+       *   container they fit side-by-side (~49% each), on a narrow container
+       *   each one expands to 100% width and stacks vertically.
+       * - No @media query needed. Gmail strips those, but this works without them.
+       */
+      function renderFluidSignatureHTML(v) {
         var phoneHtml = escapeHtml(v.phoneLabel).replace(/ /g, "&nbsp;");
 
-        // Contact Section
-        var contactHtml = "";
-        if (isMobile) {
-          contactHtml = 
-            '<div style="font-family:\'Plus Jakarta Sans\',-apple-system,\'SF Pro Display\',\'Helvetica Neue\',Arial,sans-serif;font-size:13px;line-height:22px;font-weight:500;">' +
-              '<div style="padding-bottom:6px;"><a href="' + escapeHtml(v.webUrl) + '" style="color:#0066cc;text-decoration:none;">' + escapeHtml(v.webLabel) + '</a></div>' +
-              '<div style="padding-bottom:6px;"><a href="' + escapeHtml(v.phoneUrl) + '" style="color:#0066cc;text-decoration:none;">' + phoneHtml + '</a></div>' +
-              '<div><a href="mailto:' + escapeHtml(v.email) + '" style="color:#0066cc;text-decoration:none;">' + escapeHtml(v.email) + '</a></div>' +
-            '</div>';
-        } else {
-          contactHtml = 
-            '<div style="font-family:\'Plus Jakarta Sans\',-apple-system,\'SF Pro Display\',\'Helvetica Neue\',Arial,sans-serif;font-size:13px;line-height:24px;font-weight:500;">' +
-              '<span style="display:inline-block;white-space:nowrap;padding-right:20px;"><a href="' + escapeHtml(v.webUrl) + '" style="color:#0066cc;text-decoration:none;">' + escapeHtml(v.webLabel) + '</a></span>' +
-              '<span style="display:inline-block;white-space:nowrap;padding-right:20px;"><a href="' + escapeHtml(v.phoneUrl) + '" style="color:#0066cc;text-decoration:none;">' + phoneHtml + '</a></span>' +
-              '<span style="display:inline-block;white-space:nowrap;"><a href="mailto:' + escapeHtml(v.email) + '" style="color:#0066cc;text-decoration:none;">' + escapeHtml(v.email) + '</a></span>' +
-            '</div>';
-        }
-
-        // Button Section
-        var buttonsHtml = "";
-        if (isMobile) {
-          buttonsHtml = 
-            '<div style="padding-top:14px;">' +
-              '<div style="padding-bottom:10px;">' +
-                '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;height:46px;border-collapse:separate;">' +
-                  '<tr>' +
-                    '<td style="background:#0066cc;border-radius:100px;height:46px;box-shadow:0 4px 10px rgba(0,102,204,0.22);">' +
-                      '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;height:46px;border-collapse:collapse;">' +
-                        '<tr>' +
-                          '<td style="padding:0 8px 0 22px;font-family:\'Plus Jakarta Sans\',-apple-system,\'SF Pro Display\',\'Helvetica Neue\',Arial,sans-serif;font-size:14px;line-height:46px;font-weight:600;white-space:nowrap;">' +
-                            '<a href="' + escapeHtml(v.btn1Url) + '" style="color:#ffffff;text-decoration:none;display:block;">' + escapeHtml(v.btn1Text) + '</a>' +
-                          '</td>' +
-                          '<td width="32" style="padding:0 7px 0 0;width:32px;" align="right">' +
-                            '<a href="' + escapeHtml(v.btn1Url) + '" style="text-decoration:none;display:block;width:32px;height:32px;line-height:32px;border-radius:16px;background:#ffffff;color:#0066cc;text-align:center;font-family:Arial,sans-serif;font-size:16px;font-weight:bold;">&rarr;</a>' +
-                          '</td>' +
-                        '</tr>' +
-                      '</table>' +
-                    '</td>' +
-                  '</tr>' +
-                '</table>' +
-              '</div>' +
-              '<div>' +
-                '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;height:46px;border-collapse:separate;">' +
-                  '<tr>' +
-                    '<td style="background:#ffffff;border:1.5px solid #1d1d1f;border-radius:100px;height:46px;">' +
-                      '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;height:46px;border-collapse:collapse;">' +
-                        '<tr>' +
-                          '<td style="padding:0 8px 0 20px;font-family:\'Plus Jakarta Sans\',-apple-system,\'SF Pro Display\',\'Helvetica Neue\',Arial,sans-serif;font-size:14px;line-height:46px;font-weight:600;white-space:nowrap;">' +
-                            '<a href="' + escapeHtml(v.btn2Url) + '" style="color:#1d1d1f;text-decoration:none;display:block;">' + escapeHtml(v.btn2Text) + '</a>' +
-                          '</td>' +
-                          '<td width="32" style="padding:0 7px 0 0;width:32px;" align="right">' +
-                            '<a href="' + escapeHtml(v.btn2Url) + '" style="text-decoration:none;display:block;width:32px;height:32px;line-height:32px;border-radius:16px;background:#1d1d1f;color:#ffffff;text-align:center;font-family:Arial,sans-serif;font-size:16px;font-weight:bold;">&rarr;</a>' +
-                          '</td>' +
-                        '</tr>' +
-                      '</table>' +
-                    '</td>' +
-                  '</tr>' +
-                '</table>' +
-              '</div>' +
-            '</div>';
-        } else {
-          buttonsHtml = 
-            '<div style="padding-top:14px;">' +
-              '<div style="display:inline-block;vertical-align:top;margin:0 10px 10px 0;">' +
-                '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="152" style="width:152px;height:46px;border-collapse:separate;">' +
-                  '<tr>' +
-                    '<td style="background:#0066cc;border-radius:100px;height:46px;box-shadow:0 4px 10px rgba(0,102,204,0.22);">' +
-                      '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;height:46px;border-collapse:collapse;">' +
-                        '<tr>' +
-                          '<td style="padding:0 6px 0 20px;font-family:\'Plus Jakarta Sans\',-apple-system,\'SF Pro Display\',\'Helvetica Neue\',Arial,sans-serif;font-size:14px;line-height:46px;font-weight:600;white-space:nowrap;">' +
-                            '<a href="' + escapeHtml(v.btn1Url) + '" style="color:#ffffff;text-decoration:none;display:block;">' + escapeHtml(v.btn1Text) + '</a>' +
-                          '</td>' +
-                          '<td width="32" style="padding:0 7px 0 0;width:32px;" align="right">' +
-                            '<a href="' + escapeHtml(v.btn1Url) + '" style="text-decoration:none;display:block;width:32px;height:32px;line-height:32px;border-radius:16px;background:#ffffff;color:#0066cc;text-align:center;font-family:Arial,sans-serif;font-size:16px;font-weight:bold;">&rarr;</a>' +
-                          '</td>' +
-                        '</tr>' +
-                      '</table>' +
-                    '</td>' +
-                  '</tr>' +
-                '</table>' +
-              '</div>' +
-              '<div style="display:inline-block;vertical-align:top;margin:0 0 10px 0;">' +
-                '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="180" style="width:180px;height:46px;border-collapse:separate;">' +
-                  '<tr>' +
-                    '<td style="background:#ffffff;border:1.5px solid #1d1d1f;border-radius:100px;height:46px;">' +
-                      '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;height:46px;border-collapse:collapse;">' +
-                        '<tr>' +
-                          '<td style="padding:0 6px 0 18px;font-family:\'Plus Jakarta Sans\',-apple-system,\'SF Pro Display\',\'Helvetica Neue\',Arial,sans-serif;font-size:14px;line-height:46px;font-weight:600;white-space:nowrap;">' +
-                            '<a href="' + escapeHtml(v.btn2Url) + '" style="color:#1d1d1f;text-decoration:none;display:block;">' + escapeHtml(v.btn2Text) + '</a>' +
-                          '</td>' +
-                          '<td width="32" style="padding:0 7px 0 0;width:32px;" align="right">' +
-                            '<a href="' + escapeHtml(v.btn2Url) + '" style="text-decoration:none;display:block;width:32px;height:32px;line-height:32px;border-radius:16px;background:#1d1d1f;color:#ffffff;text-align:center;font-family:Arial,sans-serif;font-size:16px;font-weight:bold;">&rarr;</a>' +
-                          '</td>' +
-                        '</tr>' +
-                      '</table>' +
-                    '</td>' +
-                  '</tr>' +
-                '</table>' +
-              '</div>' +
-            '</div>';
-        }
+        // Font stack shorthand
+        var ff = "'Plus Jakarta Sans',-apple-system,'SF Pro Display','Helvetica Neue',Arial,sans-serif";
 
         return (
-          '<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="max-width:' + maxW + ';width:100%;border-collapse:collapse;font-family:\'Plus Jakarta Sans\',-apple-system,\'SF Pro Display\',\'Helvetica Neue\',Arial,sans-serif;color:#1d1d1f;">' +
+          '<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="max-width:540px;width:100%;border-collapse:collapse;font-family:' + ff + ';color:#1d1d1f;">' +
             '<tr>' +
               '<td style="padding:0;">' +
 
-                '<!-- Identity -->' +
+                // ---- Identity Row ----
                 '<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">' +
                   '<tr>' +
                     '<td valign="middle" width="92" style="padding:0 18px 0 0;width:92px;">' +
                       '<img src="' + PHOTO_URL + '" alt="' + escapeHtml(v.name) + '" width="92" height="92" style="display:block;width:92px;height:92px;border-radius:46px;border:0;object-fit:cover;" />' +
                     '</td>' +
                     '<td valign="middle" style="padding:0;">' +
-                      '<div style="font-family:\'Plus Jakarta Sans\',-apple-system,\'SF Pro Display\',\'Helvetica Neue\',Arial,sans-serif;font-size:' + nameSize + ';line-height:' + nameLh + ';font-weight:700;letter-spacing:-0.5px;color:#1d1d1f;">' + escapeHtml(v.name) + '</div>' +
-                      '<div style="font-family:\'Plus Jakarta Sans\',-apple-system,\'SF Pro Display\',\'Helvetica Neue\',Arial,sans-serif;font-size:13px;line-height:20px;font-weight:400;color:#86868b;padding-top:2px;">' + escapeHtml(v.title) + '</div>' +
+                      '<div style="font-family:' + ff + ';font-size:26px;line-height:30px;font-weight:700;letter-spacing:-0.5px;color:#1d1d1f;">' + escapeHtml(v.name) + '</div>' +
+                      '<div style="font-family:' + ff + ';font-size:13px;line-height:20px;font-weight:400;color:#86868b;padding-top:2px;">' + escapeHtml(v.title) + '</div>' +
                     '</td>' +
                   '</tr>' +
                 '</table>' +
 
-                '<!-- Statement -->' +
-                '<div style="font-family:\'Plus Jakarta Sans\',-apple-system,\'SF Pro Display\',\'Helvetica Neue\',Arial,sans-serif;font-size:19px;line-height:26px;font-weight:600;letter-spacing:-0.3px;color:#1d1d1f;padding-top:20px;">' + escapeHtml(v.headline) + '</div>' +
-                '<div style="font-family:\'Plus Jakarta Sans\',-apple-system,\'SF Pro Display\',\'Helvetica Neue\',Arial,sans-serif;font-size:13px;line-height:20px;font-weight:400;color:#86868b;padding-top:4px;">' + escapeHtml(v.subheadline) + '</div>' +
-                '<div style="font-family:\'Plus Jakarta Sans\',-apple-system,\'SF Pro Display\',\'Helvetica Neue\',Arial,sans-serif;font-size:13px;line-height:20px;font-weight:600;color:#0066cc;padding-top:8px;"><span style="font-size:11px;color:#0066cc;vertical-align:baseline;">&#9679;</span>&nbsp;' + escapeHtml(v.status) + '</div>' +
+                // ---- Statement ----
+                '<div style="font-family:' + ff + ';font-size:19px;line-height:26px;font-weight:600;letter-spacing:-0.3px;color:#1d1d1f;padding-top:20px;">' + escapeHtml(v.headline) + '</div>' +
+                '<div style="font-family:' + ff + ';font-size:13px;line-height:20px;font-weight:400;color:#86868b;padding-top:4px;">' + escapeHtml(v.subheadline) + '</div>' +
+                '<div style="font-family:' + ff + ';font-size:13px;line-height:20px;font-weight:600;color:#0066cc;padding-top:8px;"><span style="font-size:11px;color:#0066cc;vertical-align:baseline;">&#9679;</span>&nbsp;' + escapeHtml(v.status) + '</div>' +
 
-                '<!-- Divider -->' +
-                '<div style="border-top:1px solid #e5e5ea;height:1px;line-height:1px;font-size:1px;margin:18px 0;width:100%;max-width:' + maxW + ';"></div>' +
+                // ---- Divider ----
+                '<div style="border-top:1px solid #e5e5ea;height:1px;line-height:1px;font-size:1px;margin:18px 0;width:100%;max-width:540px;"></div>' +
 
-                '<!-- Contact -->' +
-                contactHtml +
+                // ---- FLUID Contact Section ----
+                // Each contact item is display:inline-block so they flow side-by-side
+                // on wide screens and stack on narrow screens naturally.
+                '<div style="font-family:' + ff + ';font-size:13px;line-height:22px;font-weight:500;">' +
+                  // Website
+                  '<div style="display:inline-block;white-space:nowrap;vertical-align:top;padding:0 20px 6px 0;">' +
+                    '<a href="' + escapeHtml(v.webUrl) + '" style="color:#0066cc;text-decoration:none;">' + escapeHtml(v.webLabel) + '</a>' +
+                  '</div>' +
+                  // Phone
+                  '<div style="display:inline-block;white-space:nowrap;vertical-align:top;padding:0 20px 6px 0;">' +
+                    '<a href="' + escapeHtml(v.phoneUrl) + '" style="color:#0066cc;text-decoration:none;">' + phoneHtml + '</a>' +
+                  '</div>' +
+                  // Email
+                  '<div style="display:inline-block;white-space:nowrap;vertical-align:top;padding:0 0 6px 0;">' +
+                    '<a href="mailto:' + escapeHtml(v.email) + '" style="color:#0066cc;text-decoration:none;">' + escapeHtml(v.email) + '</a>' +
+                  '</div>' +
+                '</div>' +
 
-                '<!-- Buttons -->' +
-                buttonsHtml +
+                // ---- FLUID Buttons Section ----
+                // Uses min-width/max-width trick:
+                //   On wide (>340px container): two buttons fit side-by-side at ~49%
+                //   On narrow (<340px container): each button goes to 100% width and stacks
+                '<div style="padding-top:14px;font-size:0;">' +
 
-                '<!-- Socials -->' +
-                '<div style="font-family:\'Plus Jakarta Sans\',-apple-system,\'SF Pro Display\',\'Helvetica Neue\',Arial,sans-serif;font-size:12px;line-height:20px;font-weight:400;padding-top:8px;">' +
+                  // Primary Button wrapper
+                  '<!--[if mso]><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td width="50%" valign="top"><![endif]-->' +
+                  '<div style="display:inline-block;vertical-align:top;width:100%;max-width:260px;min-width:140px;padding:0 10px 10px 0;">' +
+                    '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;height:46px;border-collapse:separate;">' +
+                      '<tr>' +
+                        '<td style="background:#0066cc;border-radius:100px;height:46px;box-shadow:0 4px 10px rgba(0,102,204,0.22);">' +
+                          '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;height:46px;border-collapse:collapse;">' +
+                            '<tr>' +
+                              '<td style="padding:0 6px 0 20px;font-family:' + ff + ';font-size:14px;line-height:46px;font-weight:600;white-space:nowrap;">' +
+                                '<a href="' + escapeHtml(v.btn1Url) + '" style="color:#ffffff;text-decoration:none;display:block;">' + escapeHtml(v.btn1Text) + '</a>' +
+                              '</td>' +
+                              '<td width="32" style="padding:0 7px 0 0;width:32px;" align="right">' +
+                                '<a href="' + escapeHtml(v.btn1Url) + '" style="text-decoration:none;display:block;width:32px;height:32px;line-height:32px;border-radius:16px;background:#ffffff;color:#0066cc;text-align:center;font-family:Arial,sans-serif;font-size:16px;font-weight:bold;">&rarr;</a>' +
+                              '</td>' +
+                            '</tr>' +
+                          '</table>' +
+                        '</td>' +
+                      '</tr>' +
+                    '</table>' +
+                  '</div>' +
+                  '<!--[if mso]></td><td width="50%" valign="top"><![endif]-->' +
+
+                  // Secondary Button wrapper
+                  '<div style="display:inline-block;vertical-align:top;width:100%;max-width:260px;min-width:140px;padding:0 0 10px 0;">' +
+                    '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;height:46px;border-collapse:separate;">' +
+                      '<tr>' +
+                        '<td style="background:#ffffff;border:1.5px solid #1d1d1f;border-radius:100px;height:46px;">' +
+                          '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;height:46px;border-collapse:collapse;">' +
+                            '<tr>' +
+                              '<td style="padding:0 6px 0 18px;font-family:' + ff + ';font-size:14px;line-height:46px;font-weight:600;white-space:nowrap;">' +
+                                '<a href="' + escapeHtml(v.btn2Url) + '" style="color:#1d1d1f;text-decoration:none;display:block;">' + escapeHtml(v.btn2Text) + '</a>' +
+                              '</td>' +
+                              '<td width="32" style="padding:0 7px 0 0;width:32px;" align="right">' +
+                                '<a href="' + escapeHtml(v.btn2Url) + '" style="text-decoration:none;display:block;width:32px;height:32px;line-height:32px;border-radius:16px;background:#1d1d1f;color:#ffffff;text-align:center;font-family:Arial,sans-serif;font-size:16px;font-weight:bold;">&rarr;</a>' +
+                              '</td>' +
+                            '</tr>' +
+                          '</table>' +
+                        '</td>' +
+                      '</tr>' +
+                    '</table>' +
+                  '</div>' +
+                  '<!--[if mso]></td></tr></table><![endif]-->' +
+
+                '</div>' +
+
+                // ---- Socials ----
+                '<div style="font-family:' + ff + ';font-size:12px;line-height:20px;font-weight:400;padding-top:2px;">' +
                   '<a href="' + escapeHtml(v.linkedin) + '" style="color:#86868b;text-decoration:none;">LinkedIn</a>&nbsp;&nbsp;&nbsp;&nbsp;' +
                   '<a href="' + escapeHtml(v.behance) + '" style="color:#86868b;text-decoration:none;">Behance</a>&nbsp;&nbsp;&nbsp;&nbsp;' +
                   '<a href="' + escapeHtml(v.dribbble) + '" style="color:#86868b;text-decoration:none;">Dribbble</a>' +
@@ -686,7 +672,7 @@
 
       function updatePreview() {
         var values = getValues();
-        previewRoot.innerHTML = renderSignatureHTML(values, currentMode);
+        previewRoot.innerHTML = renderFluidSignatureHTML(values);
         saveToLocalStorage(values);
       }
 
@@ -710,13 +696,12 @@
         } catch (e) {}
       }
 
-      // Mode switching
+      // Mode switching (preview only — same HTML is always copied)
       btnDesktop.addEventListener("click", function () {
         currentMode = "desktop";
         btnDesktop.classList.add("active");
         btnMobile.classList.remove("active");
         previewWrapper.classList.remove("mobile-mode");
-        updatePreview();
       });
 
       btnMobile.addEventListener("click", function () {
@@ -724,7 +709,6 @@
         btnMobile.classList.add("active");
         btnDesktop.classList.remove("active");
         previewWrapper.classList.add("mobile-mode");
-        updatePreview();
       });
 
       // Live typing update
@@ -739,14 +723,14 @@
         }
         try { localStorage.removeItem("rr_sig_custom_data"); } catch (e) {}
         updatePreview();
-        copyStatus.textContent = "ডিফল্ট তথ্য রিস্টোর করা হয়েছে।";
+        copyStatus.textContent = "ডিফল্ট তথ্য রিস্টোর করা হয়েছে।";
         setTimeout(function () { copyStatus.textContent = ""; }, 3000);
       });
 
-      // Copy signature
+      // Copy signature — always copies the ONE fluid HTML
       btnCopy.addEventListener("click", function () {
         var values = getValues();
-        var htmlToCopy = renderSignatureHTML(values, currentMode);
+        var htmlToCopy = renderFluidSignatureHTML(values);
 
         // Put HTML directly into clipboard with rich text and fallback
         var listener = function (e) {
@@ -773,7 +757,7 @@
         }
 
         copyStatus.textContent = ok
-          ? "Copied (" + (currentMode === "mobile" ? "Mobile" : "Desktop") + " layout)! Paste into your signature settings."
+          ? "\u2705 Copied! Auto-responsive — paste it anywhere."
           : "Please select preview manually and copy.";
 
         setTimeout(function () {
