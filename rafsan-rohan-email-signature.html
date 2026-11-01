@@ -302,7 +302,7 @@
   <div class="shell">
     <div class="top-bar">
       <h1>Email Signature Generator</h1>
-      <p class="subtitle">নিচের বক্সে তথ্য পরিবর্তন করুন, লাইভ প্রিভিউ দেখুন এবং জিমেইল বা আউটলুকে সরাসরি কপি করুন।</p>
+      <p class="subtitle">Edit the fields below, preview live, and copy directly into Gmail or Outlook.</p>
     </div>
 
     <div class="grid">
@@ -332,16 +332,16 @@
         </div>
 
         <p class="preview-hint">
-          <strong>Fluid Hybrid:</strong> একটাই সিগনেচার কপি করুন — ডেক্সটপে পাশাপাশি দেখাবে, মোবাইলে স্বয়ংক্রিয়ভাবে নিচে সেজে যাবে। Desktop/Mobile টগল শুধু প্রিভিউ দেখতে।
+          <strong>Fluid Hybrid:</strong> Copy one signature — side-by-side on desktop, auto-stacked on mobile. The Desktop/Mobile toggle is for preview only.
         </p>
 
         <div class="instructions-card">
-          <h3>জিমেইল / আউটলুকে পেস্ট করার নিয়ম:</h3>
+          <h3>How to paste into Gmail / Outlook:</h3>
           <ol>
-            <li>উপরে <strong>Copy Signature</strong> বাটনে ক্লিক করুন।</li>
-            <li><strong>Gmail</strong>: Settings &rarr; See all settings &rarr; General &rarr; Signature বক্সে গিয়ে Paste করুন (<code>Cmd+V</code> বা <code>Ctrl+V</code>) &rarr; Save Changes।</li>
-            <li><strong>Apple Mail</strong>: Settings &rarr; Signatures &rarr; নতুন যোগ করে Paste করুন।</li>
-            <li><strong>Outlook</strong>: Settings &rarr; Mail &rarr; Signature এ গিয়ে Paste করুন।</li>
+            <li>Click the <strong>Copy Signature</strong> button above.</li>
+            <li><strong>Gmail</strong>: Settings &rarr; See all settings &rarr; General &rarr; Signature box &rarr; Paste (<code>Cmd+V</code> or <code>Ctrl+V</code>) &rarr; Save Changes.</li>
+            <li><strong>Apple Mail</strong>: Settings &rarr; Signatures &rarr; Add new and Paste.</li>
+            <li><strong>Outlook</strong>: Settings &rarr; Mail &rarr; Signature &rarr; Paste.</li>
           </ol>
         </div>
       </div>
@@ -349,7 +349,7 @@
       <!-- Right Column: Interactive Editor Form -->
       <div class="panel">
         <div class="panel-header">
-          <h2 class="panel-title">Edit Details (রিয়েল-টাইম এডিটর)</h2>
+          <h2 class="panel-title">Edit Details (Real-Time Editor)</h2>
         </div>
 
         <form id="editor-form" onsubmit="return false;">
@@ -727,7 +727,7 @@
         }
         try { localStorage.removeItem("rr_sig_custom_data"); } catch (e) {}
         updatePreview();
-        copyStatus.textContent = "ডিফল্ট তথ্য রিস্টোর করা হয়েছে।";
+        copyStatus.textContent = "Default values restored.";
         setTimeout(function () { copyStatus.textContent = ""; }, 3000);
       });
 
