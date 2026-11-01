@@ -605,28 +605,46 @@
                 '</div>' +
 
                 // ---- FLUID Buttons Section ----
-                // Compact buttons — fit side-by-side on desktop, stack on mobile naturally
+                // Compact buttons with circle arrows — fit-content on desktop, full-width on mobile
                 '<div style="padding-top:14px;font-size:0;">' +
 
-                  // Primary Button wrapper — compact fit-content style
+                  // Primary Button wrapper
                   '<!--[if mso]><table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td valign="top"><![endif]-->' +
                   '<div style="display:inline-block;vertical-align:top;padding:0 8px 8px 0;">' +
                     '<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:separate;">' +
                       '<tr>' +
-                        '<td style="background:#0066cc;border-radius:100px;height:38px;">' +
-                          '<a href="' + escapeHtml(v.btn1Url) + '" style="color:#ffffff;text-decoration:none;display:inline-block;font-family:' + ff + ';font-size:13px;line-height:38px;font-weight:600;white-space:nowrap;padding:0 16px 0 18px;">' + escapeHtml(v.btn1Text) + ' &nbsp;&rarr;</a>' +
+                        '<td style="background:#0066cc;border-radius:100px;height:40px;">' +
+                          '<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="height:40px;border-collapse:collapse;">' +
+                            '<tr>' +
+                              '<td style="padding:0 0 0 16px;font-family:' + ff + ';font-size:13px;line-height:40px;font-weight:600;white-space:nowrap;">' +
+                                '<a href="' + escapeHtml(v.btn1Url) + '" style="color:#ffffff;text-decoration:none;display:block;">' + escapeHtml(v.btn1Text) + '</a>' +
+                              '</td>' +
+                              '<td width="28" style="padding:0 6px 0 10px;width:28px;" align="right">' +
+                                '<a href="' + escapeHtml(v.btn1Url) + '" style="text-decoration:none;display:block;width:28px;height:28px;line-height:28px;border-radius:14px;background:#ffffff;color:#0066cc;text-align:center;font-family:Arial,sans-serif;font-size:14px;font-weight:bold;">&rarr;</a>' +
+                              '</td>' +
+                            '</tr>' +
+                          '</table>' +
                         '</td>' +
                       '</tr>' +
                     '</table>' +
                   '</div>' +
                   '<!--[if mso]></td><td valign="top"><![endif]-->' +
 
-                  // Secondary Button wrapper — compact fit-content style
+                  // Secondary Button wrapper
                   '<div style="display:inline-block;vertical-align:top;padding:0 0 8px 0;">' +
                     '<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:separate;">' +
                       '<tr>' +
-                        '<td style="background:#ffffff;border:1.5px solid #1d1d1f;border-radius:100px;height:38px;">' +
-                          '<a href="' + escapeHtml(v.btn2Url) + '" style="color:#1d1d1f;text-decoration:none;display:inline-block;font-family:' + ff + ';font-size:13px;line-height:38px;font-weight:600;white-space:nowrap;padding:0 16px 0 18px;">' + escapeHtml(v.btn2Text) + ' &nbsp;&rarr;</a>' +
+                        '<td style="background:#ffffff;border:1.5px solid #1d1d1f;border-radius:100px;height:40px;">' +
+                          '<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="height:40px;border-collapse:collapse;">' +
+                            '<tr>' +
+                              '<td style="padding:0 0 0 16px;font-family:' + ff + ';font-size:13px;line-height:40px;font-weight:600;white-space:nowrap;">' +
+                                '<a href="' + escapeHtml(v.btn2Url) + '" style="color:#1d1d1f;text-decoration:none;display:block;">' + escapeHtml(v.btn2Text) + '</a>' +
+                              '</td>' +
+                              '<td width="28" style="padding:0 6px 0 10px;width:28px;" align="right">' +
+                                '<a href="' + escapeHtml(v.btn2Url) + '" style="text-decoration:none;display:block;width:28px;height:28px;line-height:28px;border-radius:14px;background:#1d1d1f;color:#ffffff;text-align:center;font-family:Arial,sans-serif;font-size:14px;font-weight:bold;">&rarr;</a>' +
+                              '</td>' +
+                            '</tr>' +
+                          '</table>' +
                         '</td>' +
                       '</tr>' +
                     '</table>' +
