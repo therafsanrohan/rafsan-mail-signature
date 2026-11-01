@@ -4,233 +4,787 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Rafsan Rohan — Email Signature</title>
+  <title>Rafsan Rohan — Email Signature Generator</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --accent: #0066cc;
+      --accent-hover: #0052a3;
+      --ink: #1d1d1f;
+      --muted: #86868b;
+      --border: #d2d2d7;
+      --divider: #e5e5ea;
+      --bg: #f5f5f7;
+      --white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      background: #f5f5f7;
-      font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
-      color: #1d1d1f;
+      background: var(--bg);
+      font-family: 'Plus Jakarta Sans', -apple-system, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
     }
 
     .shell {
-      max-width: 640px;
+      max-width: 1040px;
       margin: 0 auto;
-      padding: 32px 16px 56px;
+      padding: 36px 20px 64px;
+    }
+
+    .top-bar {
+      margin-bottom: 28px;
     }
 
     h1 {
-      font-size: 22px;
+      font-size: 26px;
+      line-height: 32px;
       margin: 0 0 6px;
       font-weight: 700;
+      letter-spacing: -0.5px;
     }
 
-    p.hint {
-      margin: 0 0 20px;
-      color: #86868b;
-      font-size: 14px;
+    p.subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 22px;
+    }
+
+    /* Grid layout */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+
+    @media (min-width: 900px) {
+      .grid {
+        grid-template-columns: 540px 1fr;
+        align-items: start;
+      }
+    }
+
+    /* Card Panels */
+    .panel {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px 24px;
+      box-shadow: 0 2px 14px rgba(0, 0, 0, 0.04);
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .panel-title {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      margin: 0;
+    }
+
+    /* Mode Pill Selector */
+    .mode-pills {
+      display: inline-flex;
+      background: #eef0f3;
+      padding: 3px;
+      border-radius: 99px;
+    }
+
+    .mode-pill {
+      border: none;
+      background: transparent;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: inherit;
+      color: var(--muted);
+      border-radius: 99px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .mode-pill.active {
+      background: var(--white);
+      color: var(--ink);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    /* Signature Preview Area */
+    .preview-box {
+      background: var(--white);
+      border: 1px dashed #c7c7cc;
+      border-radius: 16px;
+      padding: 24px 20px;
+      min-height: 360px;
+      overflow-x: auto;
+      transition: all 0.25s ease;
+    }
+
+    .preview-box.mobile-mode {
+      max-width: 380px;
+      margin: 0 auto;
+      border-color: #0066cc;
+      box-shadow: 0 8px 24px rgba(0,102,204,0.08);
+    }
+
+    .preview-hint {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 14px;
       line-height: 1.5;
     }
 
-    .mail {
-      background: #ffffff;
-      border: 1px solid #d2d2d7;
-      border-radius: 24px;
-      padding: 32px 28px;
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    /* Actions Bar */
+    .action-bar {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
     }
 
-    .mail .body {
-      font-size: 15px;
-      line-height: 1.6;
-      margin: 0 0 26px;
-      color: #1d1d1f;
-    }
-
-    button#copy {
-      background: #0066cc;
-      color: #ffffff;
+    button.btn-primary {
+      background: var(--accent);
+      color: var(--white);
       border: 0;
-      border-radius: 980px;
-      padding: 12px 24px;
+      border-radius: 99px;
+      padding: 12px 22px;
       font-size: 14px;
       font-weight: 600;
+      font-family: inherit;
       cursor: pointer;
-      margin-top: 24px;
-      transition: background 0.15s ease;
+      transition: background 0.15s ease, transform 0.1s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    button#copy:hover {
-      background: #0055b3;
+    button.btn-primary:hover {
+      background: var(--accent-hover);
     }
 
-    button#copy:focus-visible {
-      outline: 3px solid #99c2eb;
-      outline-offset: 2px;
+    button.btn-primary:active {
+      transform: scale(0.98);
     }
 
-    #status {
-      margin-left: 12px;
+    button.btn-secondary {
+      background: var(--white);
+      color: var(--ink);
+      border: 1.5px solid var(--border);
+      border-radius: 99px;
+      padding: 11px 18px;
       font-size: 13px;
-      color: #86868b;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.15s ease;
     }
 
-    ol {
-      font-size: 14px;
-      line-height: 1.7;
+    button.btn-secondary:hover {
+      border-color: var(--ink);
+    }
+
+    #copy-status {
+      font-size: 13px;
+      font-weight: 500;
+      color: #008844;
+      display: inline-block;
+      min-height: 20px;
+    }
+
+    /* Form Inputs */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #48484a;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    input[type="text"],
+    input[type="url"],
+    input[type="email"] {
+      width: 100%;
+      padding: 9px 13px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--ink);
+      background: #fafafc;
+      transition: all 0.15s ease;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: var(--white);
+      box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.12);
+    }
+
+    .form-section-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 22px 0 10px;
+      padding-top: 14px;
+      border-top: 1px solid var(--divider);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .instructions-card {
+      margin-top: 24px;
+      padding: 18px 20px;
+      background: #fafafc;
+      border: 1px solid var(--divider);
+      border-radius: 14px;
+    }
+
+    .instructions-card h3 {
+      margin: 0 0 8px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .instructions-card ol {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 13px;
+      line-height: 1.6;
       color: #515154;
-      padding-left: 20px;
-      margin-top: 26px;
     }
   </style>
 </head>
 
 <body>
   <div class="shell">
-    <h1>Email signature</h1>
-    <p class="hint">Preview. Resize the window to see the mobile layout, then copy.</p>
-
-    <div class="mail">
-      <p class="body">Hi there,<br>Thanks for reaching out. Let&rsquo;s talk about what the work needs to achieve.</p>
-
-      <div id="signature">
-        <table role="presentation" cellpadding="0" cellspacing="0" border="0"
-          style="max-width:540px;width:100%;border-collapse:collapse;font-family:'Plus Jakarta Sans',-apple-system,'SF Pro Display','Helvetica Neue',Arial,sans-serif;color:#1d1d1f;">
-          <tr>
-            <td style="padding:0;">
-
-              <!-- Identity Block -->
-              <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
-                <tr>
-                  <td valign="middle" width="92" style="padding:0 18px 0 0;width:92px;">
-                    <img src="https://therafsanrohan.github.io/rafsan-mail-signature/rafsan-rohan-headshot-92px.png" alt="Rafsan Rohan" width="92" height="92"
-                      style="display:block;width:92px;height:92px;border-radius:46px;border:0;object-fit:cover;" />
-                  </td>
-                  <td valign="middle" style="padding:0;">
-                    <div
-                      style="font-family:'Plus Jakarta Sans',-apple-system,'SF Pro Display','Helvetica Neue',Arial,sans-serif;font-size:26px;line-height:30px;font-weight:700;letter-spacing:-0.5px;color:#1d1d1f;">
-                      Rafsan Rohan</div>
-                    <div
-                      style="font-family:'Plus Jakarta Sans',-apple-system,'SF Pro Display','Helvetica Neue',Arial,sans-serif;font-size:13px;line-height:20px;font-weight:400;color:#86868b;padding-top:2px;">
-                      Creative Visualizer &amp; Visual Strategist</div>
-                  </td>
-                </tr>
-              </table>
-
-              <!-- Statement Block -->
-              <div
-                style="font-family:'Plus Jakarta Sans',-apple-system,'SF Pro Display','Helvetica Neue',Arial,sans-serif;font-size:19px;line-height:26px;font-weight:600;letter-spacing:-0.3px;color:#1d1d1f;padding-top:20px;">
-                30+ brands. 5+ years.</div>
-              <div
-                style="font-family:'Plus Jakarta Sans',-apple-system,'SF Pro Display','Helvetica Neue',Arial,sans-serif;font-size:13px;line-height:20px;font-weight:400;color:#86868b;padding-top:4px;">
-                Brand identity, campaigns, visual storytelling.</div>
-              <div
-                style="font-family:'Plus Jakarta Sans',-apple-system,'SF Pro Display','Helvetica Neue',Arial,sans-serif;font-size:13px;line-height:20px;font-weight:600;color:#0066cc;padding-top:8px;">
-                <span style="font-size:11px;color:#0066cc;vertical-align:baseline;">&#9679;</span>&nbsp;Open for projects</div>
-
-              <!-- Divider Line (Dark theme & Mobile friendly) -->
-              <div style="border-top:1px solid #e5e5ea;height:1px;line-height:1px;font-size:1px;margin:18px 0;width:100%;max-width:540px;"></div>
-
-              <!-- Contact Row (Responsive Inline Wrapping) -->
-              <div
-                style="font-family:'Plus Jakarta Sans',-apple-system,'SF Pro Display','Helvetica Neue',Arial,sans-serif;font-size:13px;line-height:24px;font-weight:500;">
-                <span style="display:inline-block;white-space:nowrap;padding-right:20px;"><a
-                    href="https://www.rafsanrohan.com"
-                    style="color:#0066cc;text-decoration:none;">rafsanrohan.com</a></span>
-                <span style="display:inline-block;white-space:nowrap;padding-right:20px;"><a
-                    href="https://wa.me/8801325078942"
-                    style="color:#0066cc;text-decoration:none;">+880&nbsp;1325&nbsp;078&nbsp;942</a></span>
-                <span style="display:inline-block;white-space:nowrap;"><a href="mailto:knock@rafsanrohan.com"
-                    style="color:#0066cc;text-decoration:none;">knock@rafsanrohan.com</a></span>
-              </div>
-
-              <!-- Action Buttons (Responsive Pill Layout) -->
-              <div style="padding-top:14px;">
-                <div style="display:inline-block;vertical-align:top;margin:0 10px 10px 0;">
-                  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="152"
-                    style="width:152px;height:46px;border-collapse:separate;">
-                    <tr>
-                      <td style="background:#0066cc;border-radius:100px;height:46px;box-shadow:0 4px 10px rgba(0,102,204,0.22);">
-                        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
-                          style="width:100%;height:46px;border-collapse:collapse;">
-                          <tr>
-                            <td
-                              style="padding:0 6px 0 20px;font-family:'Plus Jakarta Sans',-apple-system,'SF Pro Display','Helvetica Neue',Arial,sans-serif;font-size:14px;line-height:46px;font-weight:600;white-space:nowrap;">
-                              <a href="https://wa.me/8801325078942"
-                                style="color:#ffffff;text-decoration:none;display:block;">Let&rsquo;s talk</a>
-                            </td>
-                            <td width="32" style="padding:0 7px 0 0;width:32px;" align="right">
-                              <a href="https://wa.me/8801325078942"
-                                style="text-decoration:none;display:block;width:32px;height:32px;line-height:32px;border-radius:16px;background:#ffffff;color:#0066cc;text-align:center;font-family:Arial,sans-serif;font-size:16px;font-weight:bold;">&rarr;</a>
-                            </td>
-                          </tr>
-                        </table>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-
-                <div style="display:inline-block;vertical-align:top;margin:0 0 10px 0;">
-                  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="180"
-                    style="width:180px;height:46px;border-collapse:separate;">
-                    <tr>
-                      <td style="background:#ffffff;border:1.5px solid #1d1d1f;border-radius:100px;height:46px;">
-                        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
-                          style="width:100%;height:46px;border-collapse:collapse;">
-                          <tr>
-                            <td
-                              style="padding:0 6px 0 18px;font-family:'Plus Jakarta Sans',-apple-system,'SF Pro Display','Helvetica Neue',Arial,sans-serif;font-size:14px;line-height:46px;font-weight:600;white-space:nowrap;">
-                              <a href="https://www.rafsanrohan.com/"
-                                style="color:#1d1d1f;text-decoration:none;display:block;">View my work</a>
-                            </td>
-                            <td width="32" style="padding:0 7px 0 0;width:32px;" align="right">
-                              <a href="https://www.rafsanrohan.com/"
-                                style="text-decoration:none;display:block;width:32px;height:32px;line-height:32px;border-radius:16px;background:#1d1d1f;color:#ffffff;text-align:center;font-family:Arial,sans-serif;font-size:16px;font-weight:bold;">&rarr;</a>
-                            </td>
-                          </tr>
-                        </table>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-              </div>
-
-              <!-- Social Links -->
-              <div
-                style="font-family:'Plus Jakarta Sans',-apple-system,'SF Pro Display','Helvetica Neue',Arial,sans-serif;font-size:12px;line-height:20px;font-weight:400;padding-top:8px;">
-                <a href="https://www.linkedin.com/in/therafsanrohan"
-                  style="color:#86868b;text-decoration:none;">LinkedIn</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                <a href="https://www.behance.net/therafsanrohan"
-                  style="color:#86868b;text-decoration:none;">Behance</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                <a href="https://dribbble.com/therafsanrohan"
-                  style="color:#86868b;text-decoration:none;">Dribbble</a>
-              </div>
-
-            </td>
-          </tr>
-        </table>
-      </div>
+    <div class="top-bar">
+      <h1>Email Signature Generator</h1>
+      <p class="subtitle">নিচের বক্সে তথ্য পরিবর্তন করুন, লাইভ প্রিভিউ দেখুন এবং জিমেইল বা আউটলুকে সরাসরি কপি করুন।</p>
     </div>
 
-    <button id="copy" type="button">Copy signature</button><span id="status" role="status"></span>
-    <ol>
-      <li>Click &ldquo;Copy signature&rdquo;.</li>
-      <li>Gmail: Settings, See all settings, Signature, create new, paste.</li>
-      <li>Outlook: Settings, Mail, Compose and reply, Email signature, paste.</li>
-      <li>Apple Mail: Settings, Signatures, paste (turn off &ldquo;Always match my default message font&rdquo;).</li>
-    </ol>
+    <div class="grid">
+      <!-- Left Column: Live Preview & Copy -->
+      <div class="panel">
+        <div class="panel-header">
+          <h2 class="panel-title">Signature Preview</h2>
+          <div class="mode-pills" role="tablist">
+            <button class="mode-pill active" id="btn-mode-desktop" type="button">Desktop</button>
+            <button class="mode-pill" id="btn-mode-mobile" type="button">Mobile</button>
+          </div>
+        </div>
+
+        <div class="preview-box" id="preview-wrapper">
+          <div id="signature-root">
+            <!-- Signature Rendered by JavaScript -->
+          </div>
+        </div>
+
+        <div class="action-bar">
+          <button class="btn-primary" id="btn-copy" type="button">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            Copy Signature
+          </button>
+          <button class="btn-secondary" id="btn-reset" type="button">Reset Defaults</button>
+          <span id="copy-status"></span>
+        </div>
+
+        <p class="preview-hint">
+          <strong>টিপস:</strong> আপনি যে ভিউ সিলেক্ট করবেন (Desktop বা Mobile), "Copy Signature" বাটনে চাপলে সেই লেআউটের সিগনেচারই আপনার ক্লিপবোর্ডে কপি হয়ে যাবে।
+        </p>
+
+        <div class="instructions-card">
+          <h3>জিমেইল / আউটলুকে পেস্ট করার নিয়ম:</h3>
+          <ol>
+            <li>উপরে <strong>Copy Signature</strong> বাটনে ক্লিক করুন।</li>
+            <li><strong>Gmail</strong>: Settings &rarr; See all settings &rarr; General &rarr; Signature বক্সে গিয়ে Paste করুন (`Cmd+V` বা `Ctrl+V`) &rarr; Save Changes।</li>
+            <li><strong>Apple Mail</strong>: Settings &rarr; Signatures &rarr; নতুন যোগ করে Paste করুন।</li>
+            <li><strong>Outlook</strong>: Settings &rarr; Mail &rarr; Signature এ গিয়ে Paste করুন।</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Right Column: Interactive Editor Form -->
+      <div class="panel">
+        <div class="panel-header">
+          <h2 class="panel-title">Edit Details (রিয়েল-টাইম এডিটর)</h2>
+        </div>
+
+        <form id="editor-form" onsubmit="return false;">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="inp-name">Full Name</label>
+              <input type="text" id="inp-name" value="Rafsan Rohan">
+            </div>
+            <div class="form-group">
+              <label for="inp-title">Job Title</label>
+              <input type="text" id="inp-title" value="Creative Visualizer &amp; Visual Strategist">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="inp-headline">Statement Headline</label>
+            <input type="text" id="inp-headline" value="30+ brands. 5+ years.">
+          </div>
+
+          <div class="form-group">
+            <label for="inp-subheadline">Statement Subtitle</label>
+            <input type="text" id="inp-subheadline" value="Brand identity, campaigns, visual storytelling.">
+          </div>
+
+          <div class="form-group">
+            <label for="inp-status">Availability Status</label>
+            <input type="text" id="inp-status" value="Open for projects">
+          </div>
+
+          <div class="form-section-title">
+            <span>Contact Information</span>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="inp-web-label">Website Label</label>
+              <input type="text" id="inp-web-label" value="rafsanrohan.com">
+            </div>
+            <div class="form-group">
+              <label for="inp-web-url">Website Link</label>
+              <input type="url" id="inp-web-url" value="https://www.rafsanrohan.com">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="inp-phone-label">Phone Display</label>
+              <input type="text" id="inp-phone-label" value="+880 1325 078 942">
+            </div>
+            <div class="form-group">
+              <label for="inp-phone-url">WhatsApp Link</label>
+              <input type="url" id="inp-phone-url" value="https://wa.me/8801325078942">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="inp-email">Email Address</label>
+            <input type="email" id="inp-email" value="knock@rafsanrohan.com">
+          </div>
+
+          <div class="form-section-title">
+            <span>Action Buttons (CTAs)</span>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="inp-btn1-text">Button 1 Text</label>
+              <input type="text" id="inp-btn1-text" value="Let’s talk">
+            </div>
+            <div class="form-group">
+              <label for="inp-btn1-url">Button 1 Link</label>
+              <input type="url" id="inp-btn1-url" value="https://wa.me/8801325078942">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="inp-btn2-text">Button 2 Text</label>
+              <input type="text" id="inp-btn2-text" value="View my work">
+            </div>
+            <div class="form-group">
+              <label for="inp-btn2-url">Button 2 Link</label>
+              <input type="url" id="inp-btn2-url" value="https://www.rafsanrohan.com/">
+            </div>
+          </div>
+
+          <div class="form-section-title">
+            <span>Social Profile Links</span>
+          </div>
+
+          <div class="form-group">
+            <label for="inp-linkedin">LinkedIn URL</label>
+            <input type="url" id="inp-linkedin" value="https://www.linkedin.com/in/therafsanrohan">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="inp-behance">Behance URL</label>
+              <input type="url" id="inp-behance" value="https://www.behance.net/therafsanrohan">
+            </div>
+            <div class="form-group">
+              <label for="inp-dribbble">Dribbble URL</label>
+              <input type="url" id="inp-dribbble" value="https://dribbble.com/therafsanrohan">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 
   <script>
-    document.getElementById('copy').addEventListener('click', function () {
-      var el = document.getElementById('signature'), r = document.createRange(); r.selectNode(el);
-      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); var ok = false;
-      try { ok = document.execCommand('copy'); } catch (e) { } s.removeAllRanges();
-      document.getElementById('status').textContent = ok ? 'Copied. Paste it into your signature settings.' : 'Select the signature manually and copy.';
-    });
+    (function () {
+      var PHOTO_URL = "https://therafsanrohan.github.io/rafsan-mail-signature/rafsan-rohan-headshot-92px.png";
+
+      var DEFAULTS = {
+        name: "Rafsan Rohan",
+        title: "Creative Visualizer & Visual Strategist",
+        headline: "30+ brands. 5+ years.",
+        subheadline: "Brand identity, campaigns, visual storytelling.",
+        status: "Open for projects",
+        webLabel: "rafsanrohan.com",
+        webUrl: "https://www.rafsanrohan.com",
+        phoneLabel: "+880 1325 078 942",
+        phoneUrl: "https://wa.me/8801325078942",
+        email: "knock@rafsanrohan.com",
+        btn1Text: "Let’s talk",
+        btn1Url: "https://wa.me/8801325078942",
+        btn2Text: "View my work",
+        btn2Url: "https://www.rafsanrohan.com/",
+        linkedin: "https://www.linkedin.com/in/therafsanrohan",
+        behance: "https://www.behance.net/therafsanrohan",
+        dribbble: "https://dribbble.com/therafsanrohan"
+      };
+
+      var currentMode = "desktop"; // "desktop" | "mobile"
+
+      var form = {
+        name: document.getElementById("inp-name"),
+        title: document.getElementById("inp-title"),
+        headline: document.getElementById("inp-headline"),
+        subheadline: document.getElementById("inp-subheadline"),
+        status: document.getElementById("inp-status"),
+        webLabel: document.getElementById("inp-web-label"),
+        webUrl: document.getElementById("inp-web-url"),
+        phoneLabel: document.getElementById("inp-phone-label"),
+        phoneUrl: document.getElementById("inp-phone-url"),
+        email: document.getElementById("inp-email"),
+        btn1Text: document.getElementById("inp-btn1-text"),
+        btn1Url: document.getElementById("inp-btn1-url"),
+        btn2Text: document.getElementById("inp-btn2-text"),
+        btn2Url: document.getElementById("inp-btn2-url"),
+        linkedin: document.getElementById("inp-linkedin"),
+        behance: document.getElementById("inp-behance"),
+        dribbble: document.getElementById("inp-dribbble")
+      };
+
+      var previewRoot = document.getElementById("signature-root");
+      var previewWrapper = document.getElementById("preview-wrapper");
+      var btnDesktop = document.getElementById("btn-mode-desktop");
+      var btnMobile = document.getElementById("btn-mode-mobile");
+      var btnCopy = document.getElementById("btn-copy");
+      var btnReset = document.getElementById("btn-reset");
+      var copyStatus = document.getElementById("copy-status");
+
+      function getValues() {
+        return {
+          name: form.name.value.trim() || DEFAULTS.name,
+          title: form.title.value.trim() || DEFAULTS.title,
+          headline: form.headline.value.trim() || DEFAULTS.headline,
+          subheadline: form.subheadline.value.trim() || DEFAULTS.subheadline,
+          status: form.status.value.trim() || DEFAULTS.status,
+          webLabel: form.webLabel.value.trim() || DEFAULTS.webLabel,
+          webUrl: form.webUrl.value.trim() || DEFAULTS.webUrl,
+          phoneLabel: form.phoneLabel.value.trim() || DEFAULTS.phoneLabel,
+          phoneUrl: form.phoneUrl.value.trim() || DEFAULTS.phoneUrl,
+          email: form.email.value.trim() || DEFAULTS.email,
+          btn1Text: form.btn1Text.value.trim() || DEFAULTS.btn1Text,
+          btn1Url: form.btn1Url.value.trim() || DEFAULTS.btn1Url,
+          btn2Text: form.btn2Text.value.trim() || DEFAULTS.btn2Text,
+          btn2Url: form.btn2Url.value.trim() || DEFAULTS.btn2Url,
+          linkedin: form.linkedin.value.trim() || DEFAULTS.linkedin,
+          behance: form.behance.value.trim() || DEFAULTS.behance,
+          dribbble: form.dribbble.value.trim() || DEFAULTS.dribbble
+        };
+      }
+
+      function escapeHtml(text) {
+        var div = document.createElement("div");
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      function renderSignatureHTML(v, mode) {
+        var isMobile = mode === "mobile";
+        var maxW = isMobile ? "380px" : "540px";
+        var nameSize = isMobile ? "22px" : "26px";
+        var nameLh = isMobile ? "26px" : "30px";
+
+        // Non-breaking phone label
+        var phoneHtml = escapeHtml(v.phoneLabel).replace(/ /g, "&nbsp;");
+
+        // Contact Section
+        var contactHtml = "";
+        if (isMobile) {
+          contactHtml = 
+            '<div style="font-family:\'Plus Jakarta Sans\',-apple-system,\'SF Pro Display\',\'Helvetica Neue\',Arial,sans-serif;font-size:13px;line-height:22px;font-weight:500;">' +
+              '<div style="padding-bottom:6px;"><a href="' + escapeHtml(v.webUrl) + '" style="color:#0066cc;text-decoration:none;">' + escapeHtml(v.webLabel) + '</a></div>' +
+              '<div style="padding-bottom:6px;"><a href="' + escapeHtml(v.phoneUrl) + '" style="color:#0066cc;text-decoration:none;">' + phoneHtml + '</a></div>' +
+              '<div><a href="mailto:' + escapeHtml(v.email) + '" style="color:#0066cc;text-decoration:none;">' + escapeHtml(v.email) + '</a></div>' +
+            '</div>';
+        } else {
+          contactHtml = 
+            '<div style="font-family:\'Plus Jakarta Sans\',-apple-system,\'SF Pro Display\',\'Helvetica Neue\',Arial,sans-serif;font-size:13px;line-height:24px;font-weight:500;">' +
+              '<span style="display:inline-block;white-space:nowrap;padding-right:20px;"><a href="' + escapeHtml(v.webUrl) + '" style="color:#0066cc;text-decoration:none;">' + escapeHtml(v.webLabel) + '</a></span>' +
+              '<span style="display:inline-block;white-space:nowrap;padding-right:20px;"><a href="' + escapeHtml(v.phoneUrl) + '" style="color:#0066cc;text-decoration:none;">' + phoneHtml + '</a></span>' +
+              '<span style="display:inline-block;white-space:nowrap;"><a href="mailto:' + escapeHtml(v.email) + '" style="color:#0066cc;text-decoration:none;">' + escapeHtml(v.email) + '</a></span>' +
+            '</div>';
+        }
+
+        // Button Section
+        var buttonsHtml = "";
+        if (isMobile) {
+          buttonsHtml = 
+            '<div style="padding-top:14px;">' +
+              '<div style="padding-bottom:10px;">' +
+                '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;height:46px;border-collapse:separate;">' +
+                  '<tr>' +
+                    '<td style="background:#0066cc;border-radius:100px;height:46px;box-shadow:0 4px 10px rgba(0,102,204,0.22);">' +
+                      '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;height:46px;border-collapse:collapse;">' +
+                        '<tr>' +
+                          '<td style="padding:0 8px 0 22px;font-family:\'Plus Jakarta Sans\',-apple-system,\'SF Pro Display\',\'Helvetica Neue\',Arial,sans-serif;font-size:14px;line-height:46px;font-weight:600;white-space:nowrap;">' +
+                            '<a href="' + escapeHtml(v.btn1Url) + '" style="color:#ffffff;text-decoration:none;display:block;">' + escapeHtml(v.btn1Text) + '</a>' +
+                          '</td>' +
+                          '<td width="32" style="padding:0 7px 0 0;width:32px;" align="right">' +
+                            '<a href="' + escapeHtml(v.btn1Url) + '" style="text-decoration:none;display:block;width:32px;height:32px;line-height:32px;border-radius:16px;background:#ffffff;color:#0066cc;text-align:center;font-family:Arial,sans-serif;font-size:16px;font-weight:bold;">&rarr;</a>' +
+                          '</td>' +
+                        '</tr>' +
+                      '</table>' +
+                    '</td>' +
+                  '</tr>' +
+                '</table>' +
+              '</div>' +
+              '<div>' +
+                '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;height:46px;border-collapse:separate;">' +
+                  '<tr>' +
+                    '<td style="background:#ffffff;border:1.5px solid #1d1d1f;border-radius:100px;height:46px;">' +
+                      '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;height:46px;border-collapse:collapse;">' +
+                        '<tr>' +
+                          '<td style="padding:0 8px 0 20px;font-family:\'Plus Jakarta Sans\',-apple-system,\'SF Pro Display\',\'Helvetica Neue\',Arial,sans-serif;font-size:14px;line-height:46px;font-weight:600;white-space:nowrap;">' +
+                            '<a href="' + escapeHtml(v.btn2Url) + '" style="color:#1d1d1f;text-decoration:none;display:block;">' + escapeHtml(v.btn2Text) + '</a>' +
+                          '</td>' +
+                          '<td width="32" style="padding:0 7px 0 0;width:32px;" align="right">' +
+                            '<a href="' + escapeHtml(v.btn2Url) + '" style="text-decoration:none;display:block;width:32px;height:32px;line-height:32px;border-radius:16px;background:#1d1d1f;color:#ffffff;text-align:center;font-family:Arial,sans-serif;font-size:16px;font-weight:bold;">&rarr;</a>' +
+                          '</td>' +
+                        '</tr>' +
+                      '</table>' +
+                    '</td>' +
+                  '</tr>' +
+                '</table>' +
+              '</div>' +
+            '</div>';
+        } else {
+          buttonsHtml = 
+            '<div style="padding-top:14px;">' +
+              '<div style="display:inline-block;vertical-align:top;margin:0 10px 10px 0;">' +
+                '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="152" style="width:152px;height:46px;border-collapse:separate;">' +
+                  '<tr>' +
+                    '<td style="background:#0066cc;border-radius:100px;height:46px;box-shadow:0 4px 10px rgba(0,102,204,0.22);">' +
+                      '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;height:46px;border-collapse:collapse;">' +
+                        '<tr>' +
+                          '<td style="padding:0 6px 0 20px;font-family:\'Plus Jakarta Sans\',-apple-system,\'SF Pro Display\',\'Helvetica Neue\',Arial,sans-serif;font-size:14px;line-height:46px;font-weight:600;white-space:nowrap;">' +
+                            '<a href="' + escapeHtml(v.btn1Url) + '" style="color:#ffffff;text-decoration:none;display:block;">' + escapeHtml(v.btn1Text) + '</a>' +
+                          '</td>' +
+                          '<td width="32" style="padding:0 7px 0 0;width:32px;" align="right">' +
+                            '<a href="' + escapeHtml(v.btn1Url) + '" style="text-decoration:none;display:block;width:32px;height:32px;line-height:32px;border-radius:16px;background:#ffffff;color:#0066cc;text-align:center;font-family:Arial,sans-serif;font-size:16px;font-weight:bold;">&rarr;</a>' +
+                          '</td>' +
+                        '</tr>' +
+                      '</table>' +
+                    '</td>' +
+                  '</tr>' +
+                '</table>' +
+              '</div>' +
+              '<div style="display:inline-block;vertical-align:top;margin:0 0 10px 0;">' +
+                '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="180" style="width:180px;height:46px;border-collapse:separate;">' +
+                  '<tr>' +
+                    '<td style="background:#ffffff;border:1.5px solid #1d1d1f;border-radius:100px;height:46px;">' +
+                      '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;height:46px;border-collapse:collapse;">' +
+                        '<tr>' +
+                          '<td style="padding:0 6px 0 18px;font-family:\'Plus Jakarta Sans\',-apple-system,\'SF Pro Display\',\'Helvetica Neue\',Arial,sans-serif;font-size:14px;line-height:46px;font-weight:600;white-space:nowrap;">' +
+                            '<a href="' + escapeHtml(v.btn2Url) + '" style="color:#1d1d1f;text-decoration:none;display:block;">' + escapeHtml(v.btn2Text) + '</a>' +
+                          '</td>' +
+                          '<td width="32" style="padding:0 7px 0 0;width:32px;" align="right">' +
+                            '<a href="' + escapeHtml(v.btn2Url) + '" style="text-decoration:none;display:block;width:32px;height:32px;line-height:32px;border-radius:16px;background:#1d1d1f;color:#ffffff;text-align:center;font-family:Arial,sans-serif;font-size:16px;font-weight:bold;">&rarr;</a>' +
+                          '</td>' +
+                        '</tr>' +
+                      '</table>' +
+                    '</td>' +
+                  '</tr>' +
+                '</table>' +
+              '</div>' +
+            '</div>';
+        }
+
+        return (
+          '<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="max-width:' + maxW + ';width:100%;border-collapse:collapse;font-family:\'Plus Jakarta Sans\',-apple-system,\'SF Pro Display\',\'Helvetica Neue\',Arial,sans-serif;color:#1d1d1f;">' +
+            '<tr>' +
+              '<td style="padding:0;">' +
+
+                '<!-- Identity -->' +
+                '<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">' +
+                  '<tr>' +
+                    '<td valign="middle" width="92" style="padding:0 18px 0 0;width:92px;">' +
+                      '<img src="' + PHOTO_URL + '" alt="' + escapeHtml(v.name) + '" width="92" height="92" style="display:block;width:92px;height:92px;border-radius:46px;border:0;object-fit:cover;" />' +
+                    '</td>' +
+                    '<td valign="middle" style="padding:0;">' +
+                      '<div style="font-family:\'Plus Jakarta Sans\',-apple-system,\'SF Pro Display\',\'Helvetica Neue\',Arial,sans-serif;font-size:' + nameSize + ';line-height:' + nameLh + ';font-weight:700;letter-spacing:-0.5px;color:#1d1d1f;">' + escapeHtml(v.name) + '</div>' +
+                      '<div style="font-family:\'Plus Jakarta Sans\',-apple-system,\'SF Pro Display\',\'Helvetica Neue\',Arial,sans-serif;font-size:13px;line-height:20px;font-weight:400;color:#86868b;padding-top:2px;">' + escapeHtml(v.title) + '</div>' +
+                    '</td>' +
+                  '</tr>' +
+                '</table>' +
+
+                '<!-- Statement -->' +
+                '<div style="font-family:\'Plus Jakarta Sans\',-apple-system,\'SF Pro Display\',\'Helvetica Neue\',Arial,sans-serif;font-size:19px;line-height:26px;font-weight:600;letter-spacing:-0.3px;color:#1d1d1f;padding-top:20px;">' + escapeHtml(v.headline) + '</div>' +
+                '<div style="font-family:\'Plus Jakarta Sans\',-apple-system,\'SF Pro Display\',\'Helvetica Neue\',Arial,sans-serif;font-size:13px;line-height:20px;font-weight:400;color:#86868b;padding-top:4px;">' + escapeHtml(v.subheadline) + '</div>' +
+                '<div style="font-family:\'Plus Jakarta Sans\',-apple-system,\'SF Pro Display\',\'Helvetica Neue\',Arial,sans-serif;font-size:13px;line-height:20px;font-weight:600;color:#0066cc;padding-top:8px;"><span style="font-size:11px;color:#0066cc;vertical-align:baseline;">&#9679;</span>&nbsp;' + escapeHtml(v.status) + '</div>' +
+
+                '<!-- Divider -->' +
+                '<div style="border-top:1px solid #e5e5ea;height:1px;line-height:1px;font-size:1px;margin:18px 0;width:100%;max-width:' + maxW + ';"></div>' +
+
+                '<!-- Contact -->' +
+                contactHtml +
+
+                '<!-- Buttons -->' +
+                buttonsHtml +
+
+                '<!-- Socials -->' +
+                '<div style="font-family:\'Plus Jakarta Sans\',-apple-system,\'SF Pro Display\',\'Helvetica Neue\',Arial,sans-serif;font-size:12px;line-height:20px;font-weight:400;padding-top:8px;">' +
+                  '<a href="' + escapeHtml(v.linkedin) + '" style="color:#86868b;text-decoration:none;">LinkedIn</a>&nbsp;&nbsp;&nbsp;&nbsp;' +
+                  '<a href="' + escapeHtml(v.behance) + '" style="color:#86868b;text-decoration:none;">Behance</a>&nbsp;&nbsp;&nbsp;&nbsp;' +
+                  '<a href="' + escapeHtml(v.dribbble) + '" style="color:#86868b;text-decoration:none;">Dribbble</a>' +
+                '</div>' +
+
+              '</td>' +
+            '</tr>' +
+          '</table>'
+        );
+      }
+
+      function updatePreview() {
+        var values = getValues();
+        previewRoot.innerHTML = renderSignatureHTML(values, currentMode);
+        saveToLocalStorage(values);
+      }
+
+      function saveToLocalStorage(val) {
+        try {
+          localStorage.setItem("rr_sig_custom_data", JSON.stringify(val));
+        } catch (e) {}
+      }
+
+      function loadFromLocalStorage() {
+        try {
+          var saved = localStorage.getItem("rr_sig_custom_data");
+          if (saved) {
+            var data = JSON.parse(saved);
+            for (var key in data) {
+              if (form[key]) {
+                form[key].value = data[key];
+              }
+            }
+          }
+        } catch (e) {}
+      }
+
+      // Mode switching
+      btnDesktop.addEventListener("click", function () {
+        currentMode = "desktop";
+        btnDesktop.classList.add("active");
+        btnMobile.classList.remove("active");
+        previewWrapper.classList.remove("mobile-mode");
+        updatePreview();
+      });
+
+      btnMobile.addEventListener("click", function () {
+        currentMode = "mobile";
+        btnMobile.classList.add("active");
+        btnDesktop.classList.remove("active");
+        previewWrapper.classList.add("mobile-mode");
+        updatePreview();
+      });
+
+      // Live typing update
+      for (var key in form) {
+        form[key].addEventListener("input", updatePreview);
+      }
+
+      // Reset
+      btnReset.addEventListener("click", function () {
+        for (var k in DEFAULTS) {
+          if (form[k]) form[k].value = DEFAULTS[k];
+        }
+        try { localStorage.removeItem("rr_sig_custom_data"); } catch (e) {}
+        updatePreview();
+        copyStatus.textContent = "ডিফল্ট তথ্য রিস্টোর করা হয়েছে।";
+        setTimeout(function () { copyStatus.textContent = ""; }, 3000);
+      });
+
+      // Copy signature
+      btnCopy.addEventListener("click", function () {
+        var values = getValues();
+        var htmlToCopy = renderSignatureHTML(values, currentMode);
+
+        // Put HTML directly into clipboard with rich text and fallback
+        var listener = function (e) {
+          e.clipboardData.setData("text/html", htmlToCopy);
+          e.clipboardData.setData("text/plain", values.name + " - " + values.title);
+          e.preventDefault();
+        };
+        document.addEventListener("copy", listener);
+        var ok = false;
+        try {
+          ok = document.execCommand("copy");
+        } catch (err) {}
+        document.removeEventListener("copy", listener);
+
+        if (!ok) {
+          // Fallback selection copy
+          var range = document.createRange();
+          range.selectNode(previewRoot);
+          var sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+          try { ok = document.execCommand("copy"); } catch (e) {}
+          sel.removeAllRanges();
+        }
+
+        copyStatus.textContent = ok
+          ? "Copied (" + (currentMode === "mobile" ? "Mobile" : "Desktop") + " layout)! Paste into your signature settings."
+          : "Please select preview manually and copy.";
+
+        setTimeout(function () {
+          copyStatus.textContent = "";
+        }, 5000);
+      });
+
+      // Init
+      loadFromLocalStorage();
+      updatePreview();
+    })();
   </script>
 </body>
 
